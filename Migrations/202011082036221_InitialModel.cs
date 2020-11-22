@@ -1,0 +1,18 @@
+namespace GeniusWebApp.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class InitialModel : DbMigration
+    {
+        public override void Up()
+        {
+            RenameTable(name: "dbo.Users", newName: "GeniusUsers");
+        }
+        
+        public override void Down()
+        {
+            RenameTable(name: "dbo.GeniusUsers", newName: "Users");
+        }
+    }
+}

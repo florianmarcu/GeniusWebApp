@@ -13,6 +13,15 @@ namespace GeniusWebApp
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapMvcAttributeRoutes();
+
+            //routes.MapRoute(
+            //    "UsersByDateRegistered",
+            //    "user/dateRegistered/{year}/{month}",
+            //    new { controller = "User", action = "ByDateRegistered" },
+            //    new { year = @"\d{4}", month = @"\d{2}" }
+            //);
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
