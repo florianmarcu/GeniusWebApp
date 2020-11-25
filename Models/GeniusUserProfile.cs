@@ -14,11 +14,10 @@ namespace GeniusWebApp.Models
         public int GeniusUserProfileId { get; set; }
         public string ProfileImage { get; set; }
         public string CoverImage { get; set; }
+
         public int GeniusUserId { get; set; }
+
         public GeniusUser GeniusUser { get; set; }
     }
-    public class GeniusUserProfileDbContext : DbContext
-    {
 
-    }
 }

@@ -7,13 +7,13 @@ namespace GeniusWebApp.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class OneToOneRelationBtwnGeniusUserAndProfile : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(OneToOneRelationBtwnGeniusUserAndProfile));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "202011251624369_OneToOneRelationBtwnGeniusUserAndProfile"; }
+            get { return "202011251822104_Initial"; }
         }
         
         string IMigrationMetadata.Source

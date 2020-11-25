@@ -176,37 +176,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202011082036221_InitialModel.cs" />
-    <Compile Include="Migrations\202011082036221_InitialModel.Designer.cs">
-      <DependentUpon>202011082036221_InitialModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202011161253275_AddUserProfile.cs" />
-    <Compile Include="Migrations\202011161253275_AddUserProfile.Designer.cs">
-      <DependentUpon>202011161253275_AddUserProfile.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202011161255350_ConnectUserProfileToUser.cs" />
-    <Compile Include="Migrations\202011161255350_ConnectUserProfileToUser.Designer.cs">
-      <DependentUpon>202011161255350_ConnectUserProfileToUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202011161257319_PopulateGeniusUserCollection.cs" />
-    <Compile Include="Migrations\202011161257319_PopulateGeniusUserCollection.Designer.cs">
-      <DependentUpon>202011161257319_PopulateGeniusUserCollection.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202011161330389_ApplyAnnotationsToGeniusUserName.cs" />
-    <Compile Include="Migrations\202011161330389_ApplyAnnotationsToGeniusUserName.Designer.cs">
-      <DependentUpon>202011161330389_ApplyAnnotationsToGeniusUserName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202011161428379_RenamedGeniusUserProfileFieldName.cs" />
-    <Compile Include="Migrations\202011161428379_RenamedGeniusUserProfileFieldName.Designer.cs">
-      <DependentUpon>202011161428379_RenamedGeniusUserProfileFieldName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202011251351316_AddedGroups.cs" />
-    <Compile Include="Migrations\202011251351316_AddedGroups.designer.cs">
-      <DependentUpon>202011251351316_AddedGroups.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202011251624369_OneToOneRelationBtwnGeniusUserAndProfile.cs" />
-    <Compile Include="Migrations\202011251624369_OneToOneRelationBtwnGeniusUserAndProfile.designer.cs">
-      <DependentUpon>202011251624369_OneToOneRelationBtwnGeniusUserAndProfile.cs</DependentUpon>
+    <Compile Include="Migrations\202011251822104_Initial.cs" />
+    <Compile Include="Migrations\202011251822104_Initial.designer.cs">
+      <DependentUpon>202011251822104_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -220,9 +192,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\GeniusDatabase.mdf" />
-    <Content Include="App_Data\GeniusDatabase_log.ldf">
-      <DependentUpon>GeniusDatabase.mdf</DependentUpon>
+    <Content Include="App_Data\GeniusDb.mdf" />
+    <Content Include="App_Data\GeniusDb_log.ldf">
+      <DependentUpon>GeniusDb.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap-sandstone.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -303,29 +275,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202011082036221_InitialModel.resx">
-      <DependentUpon>202011082036221_InitialModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011161253275_AddUserProfile.resx">
-      <DependentUpon>202011161253275_AddUserProfile.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011161255350_ConnectUserProfileToUser.resx">
-      <DependentUpon>202011161255350_ConnectUserProfileToUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011161257319_PopulateGeniusUserCollection.resx">
-      <DependentUpon>202011161257319_PopulateGeniusUserCollection.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011161330389_ApplyAnnotationsToGeniusUserName.resx">
-      <DependentUpon>202011161330389_ApplyAnnotationsToGeniusUserName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011161428379_RenamedGeniusUserProfileFieldName.resx">
-      <DependentUpon>202011161428379_RenamedGeniusUserProfileFieldName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011251351316_AddedGroups.resx">
-      <DependentUpon>202011251351316_AddedGroups.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011251624369_OneToOneRelationBtwnGeniusUserAndProfile.resx">
-      <DependentUpon>202011251624369_OneToOneRelationBtwnGeniusUserAndProfile.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202011251822104_Initial.resx">
+      <DependentUpon>202011251822104_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

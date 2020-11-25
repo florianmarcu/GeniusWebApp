@@ -18,19 +18,16 @@ namespace GeniusWebApp.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : DbContext
     {
+        public ApplicationDbContext() : base("DBConnectionString")
+        {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext,
+                                    GeniusWebApp.Migrations.Configuration>("DBConnectionString"));
+        }
+
+        public DbSet<Group> Groups { get; set; }
         public DbSet<GeniusUser> GeniusUsers { get; set; }
-
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
-
-        {
-        }
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
+        public DbSet<GeniusUserProfile> GeniusUserProfiles { get; set; }
     }
 }

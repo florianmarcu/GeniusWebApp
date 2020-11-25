@@ -14,7 +14,7 @@ namespace GeniusWebApp.Controllers
         /// <summary>
         /// Database context used for C.R.U.D operation
         /// </summary>
-        private GeniusUserDbContext _db;
+        //private GeniusUserDbContext _db;
         private ApplicationDbContext _applicationDb;
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace GeniusWebApp.Controllers
         /// </summary>
         public GeniusUserController()
         {
-            _db = new GeniusUserDbContext();
+            //_db = new GeniusUserDbContext();
             _applicationDb = new ApplicationDbContext();
         }
         /// <summary>
@@ -32,7 +32,7 @@ namespace GeniusWebApp.Controllers
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
-            _db.Dispose();
+            //_db.Dispose();
             _applicationDb.Dispose();
         }
 
@@ -49,10 +49,11 @@ namespace GeniusWebApp.Controllers
             //if (string.IsNullOrWhiteSpace(sortBy))
             //    sortBy = "FirstName";
 
-            var user = _applicationDb.GeniusUsers.Include(c => c.GeniusUserProfile).SingleOrDefault(c => c.GeniusUserId == Id);
-            if (!Id.HasValue)
-                return View(user);
-            return View(user);
+            //var user = _applicationDb.GeniusUsers.Include(c => c.GeniusUserProfile).SingleOrDefault(c => c.GeniusUserId == Id);
+            //if (!Id.HasValue)
+            //    return View(user);
+            //return View(user);
+            return View();
         }
         // GET: User/Random
         public ActionResult Random()

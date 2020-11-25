@@ -14,19 +14,17 @@ namespace GeniusWebApp.Models
     {
         [Key]
         public int GeniusUserId { get; set; }
+
         [Required]
         [StringLength(26)]
         public string FirstName { get; set; }
+
         [Required]
         [StringLength(26)]
         public string LastName { get; set; }
+
         [Required]
         public virtual GeniusUserProfile GeniusUserProfile { get; set; }
         public virtual ICollection<Group> Groups { get; set; }
-    }
-    public class GeniusUserDbContext : DbContext
-    {
-        public GeniusUserDbContext() : base("DBConnectionString") { }
-        public DbSet<Group> Groups { get; set; }
     }
 }
