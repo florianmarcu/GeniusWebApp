@@ -24,6 +24,7 @@ namespace GeniusWebApp.Models
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
+
         {
         }
 

@@ -11,7 +11,11 @@ namespace GeniusWebApp.Controllers
 {
     public class GeniusUserController : Controller
     {
-        private ApplicationDbContext _context;
+        /// <summary>
+        /// Database context used for C.R.U.D operation
+        /// </summary>
+        private GeniusUserDbContext _db;
+        private ApplicationDbContext _applicationDb;
 
         /// <summary>
         ///  Class Constructor that initializes the:
@@ -19,11 +23,17 @@ namespace GeniusWebApp.Controllers
         /// </summary>
         public GeniusUserController()
         {
-            _context = new ApplicationDbContext();
+            _db = new GeniusUserDbContext();
+            _applicationDb = new ApplicationDbContext();
         }
+        /// <summary>
+        /// Overrides default method for disposing the user-specific Database context
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
-            _context.Dispose();
+            _db.Dispose();
+            _applicationDb.Dispose();
         }
 
         public ActionResult New()
@@ -39,7 +49,7 @@ namespace GeniusWebApp.Controllers
             //if (string.IsNullOrWhiteSpace(sortBy))
             //    sortBy = "FirstName";
 
-            var user = _context.GeniusUsers.Include(c => c.Profile).SingleOrDefault(c => c.Id == Id);
+            var user = _applicationDb.GeniusUsers.Include(c => c.GeniusUserProfile).SingleOrDefault(c => c.GeniusUserId == Id);
             if (!Id.HasValue)
                 return View(user);
             return View(user);
@@ -47,7 +57,7 @@ namespace GeniusWebApp.Controllers
         // GET: User/Random
         public ActionResult Random()
         {
-            var user = new GeniusUser() { Id = 1 , FirstName = "Florian" , LastName = "Marcu"};
+            var user = new GeniusUser() { GeniusUserId = 1 , FirstName = "Florian" , LastName = "Marcu"};
             var actions = new List<Models.Action>
             {
                 new Models.Action {Id = 1, Title = "Post"},

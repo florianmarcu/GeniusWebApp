@@ -200,10 +200,19 @@
     <Compile Include="Migrations\202011161428379_RenamedGeniusUserProfileFieldName.Designer.cs">
       <DependentUpon>202011161428379_RenamedGeniusUserProfileFieldName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011251351316_AddedGroups.cs" />
+    <Compile Include="Migrations\202011251351316_AddedGroups.designer.cs">
+      <DependentUpon>202011251351316_AddedGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011251624369_OneToOneRelationBtwnGeniusUserAndProfile.cs" />
+    <Compile Include="Migrations\202011251624369_OneToOneRelationBtwnGeniusUserAndProfile.designer.cs">
+      <DependentUpon>202011251624369_OneToOneRelationBtwnGeniusUserAndProfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Action.cs" />
     <Compile Include="Models\GeniusUserProfile.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\GeniusUser.cs" />
@@ -211,6 +220,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\GeniusDatabase.mdf" />
+    <Content Include="App_Data\GeniusDatabase_log.ldf">
+      <DependentUpon>GeniusDatabase.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-sandstone.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -271,9 +284,9 @@
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\GeniusUser\Index.cshtml" />
     <Content Include="Views\GeniusUser\New.cshtml" />
+    <Content Include="Views\Shared\_IndexLoggedIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\Action\" />
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +320,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011161428379_RenamedGeniusUserProfileFieldName.resx">
       <DependentUpon>202011161428379_RenamedGeniusUserProfileFieldName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011251351316_AddedGroups.resx">
+      <DependentUpon>202011251351316_AddedGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011251624369_OneToOneRelationBtwnGeniusUserAndProfile.resx">
+      <DependentUpon>202011251624369_OneToOneRelationBtwnGeniusUserAndProfile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
