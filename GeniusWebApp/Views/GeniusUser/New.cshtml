@@ -1,0 +1,28 @@
+﻿@model GeniusWebApp.Models.GeniusUser
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Post</h2>
+@{ 
+    // The new action
+    GeniusWebApp.Models.Action newAction = new GeniusWebApp.Models.Action();
+}
+
+@using (Html.BeginForm("Create", "Actions"))
+{
+    <div class="form-group">
+        @Html.Label("Title")
+        @Html.TextBoxFor(m => newAction.Title, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.Label("Content")
+        @Html.TextBoxFor(m => newAction.Content, new { @class = "form-control" })
+    </div>
+    <div class="checkbox">
+        <label> 
+            @Html.CheckBoxFor(m => newAction.IsPrivate) Make the post private
+        </label>
+    </div>
+}

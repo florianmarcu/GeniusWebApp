@@ -1,0 +1,35 @@
+﻿
+@model GeniusWebApp.Models.GeniusUser
+@{
+    ViewBag.Title = "Random";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h2>@Model.Actions[0].Id</h2>
+
+@{ 
+
+    string userType = Model.Actions.Count >= 10 
+        ? "experimented" : (Model.Actions.Count >= 5 
+            ? "intermediate" 
+            : "beginner"
+           );
+}
+
+@if(Model.Actions.Count == 0)
+{
+    <p>The user has not performed any action yet</p>
+}
+else
+{
+    <ul>
+        @foreach (var action in Model.Actions)
+        {
+            <li>@action.Id</li>
+
+        }
+    </ul>
+}*@
+
+
+

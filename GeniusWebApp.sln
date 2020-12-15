@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1259
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeniusWebApp", "GeniusWebApp\GeniusWebApp.csproj", "{ADB17680-0BA8-4173-96F3-1236487C4906}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADB17680-0BA8-4173-96F3-1236487C4906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB17680-0BA8-4173-96F3-1236487C4906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADB17680-0BA8-4173-96F3-1236487C4906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB17680-0BA8-4173-96F3-1236487C4906}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A5FF968D-5204-437C-B53E-A122A31EAD8E}
+	EndGlobalSection
+EndGlobal
