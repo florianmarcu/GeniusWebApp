@@ -8,7 +8,7 @@ using System.Data.Entity;
 namespace GeniusWebApp.Models
 {
     /// <summary>
-    ///  Model that represents the app's user
+    ///  Prototype for the user of the app
     /// </summary>
     public class GeniusUser
     {
@@ -24,6 +24,9 @@ namespace GeniusWebApp.Models
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<FriendRequest> FriendRequests { get; set; }
         public virtual ICollection<UserPost> UserPosts { get; set; }
+
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; } // relationship with AspNetUsers table
     }
     
 }

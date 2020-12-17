@@ -1,0 +1,27 @@
+In fisierul Startup.cs se afla functia void CreateAdminUserAndApplicationRoles() care creeaza rolurile cand se ruleaza aplicatia(asta daca nu sunt deja create).
+Rolurile posibile sunt:
+-Admin
+-LoggedUser
+-AnonymousUser
+
+Daca o sa te uiti in baza de date ai sa vezi ca sunt 3 tabele principale care se leaga de useri si roluri:
+-AspNetRoles (tabela in care se stocheaza rolurile, in cazul acestei aplicatii va avea 3 randuri)
+-AspNetUsers (tabela in care se stocheaza userii, fiecare avand ca si cheie primara un string hashuit,
+	      parola e si ea hashuita automat)
+-AspNetUserRoles (tabela asociativa prin care se implementeaza relatia de many-to-many dintre AspNetRoles si AspNetUsers)
+
+In fisierul AccountController.cs este functia:
+
+[HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(RegisterViewModel model)
+
+iar acolo ai sa vezi linia UserManager.AddToRole(user.Id, "LoggedUser"); care atribuie unui user care se inregistreaza, automat rolul de LoggedUser
+
+
+Avand in vedere ca rolurile creeaza automat tabela in care se tin userii, iar noi aveam tabela GeniusUser,
+ca sa nu fac multe modificari am scris in descrierea tabelei GeniusUser (uita-te in GeniusUser.cs)
+ca tabela aceasta este un prototip pt userii aplicatiei si desi am pastrat Id-ul numeric pe care l-am pus
+noi initial, am adaugat si atributul public string UserId { get; set; } care e practic id-ul user-ului in tabela
+AspNetUsers, iar relatia de one-to-one dintre aceste 2 tabele am facut-o cu public virtual ApplicationUser User { get; set; }.
