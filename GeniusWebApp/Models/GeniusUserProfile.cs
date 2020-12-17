@@ -15,6 +15,9 @@ namespace GeniusWebApp.Models
         public string ProfileImage { get; set; }
         public string CoverImage { get; set; }
 
+        [RegularExpression(@"^(private|public)$", ErrorMessage = "Visibility not allowed")]
+        public string Visibility { get; set; }
+
         public int GeniusUserId { get; set; }
 
         public GeniusUser GeniusUser { get; set; }
