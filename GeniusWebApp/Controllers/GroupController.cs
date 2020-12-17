@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,13 +17,14 @@ namespace GeniusWebApp.Controllers
         }
 
         // GET: Group
-        public ActionResult Index(string Name)
+        public ActionResult Index(string groupName)
         {
-            ViewBag.Name = Name;
-            Console.WriteLine(Name);
-            if (Name != null) /// Prints only the desired group in the route
+
+            ViewBag.Name = groupName;
+            Console.WriteLine(groupName);
+            if (groupName != null) /// Prints only the desired group in the route
             {
-                var group = _db.Groups.Where(gr => gr.Name.ToLower() == Name.ToLower());
+                var group = _db.Groups.Where(gr => gr.Name.ToLower() == groupName.ToLower());
                 if (group == null || group.Count() == 0)
                     return HttpNotFound();
                 if (group.Count() == 1)
