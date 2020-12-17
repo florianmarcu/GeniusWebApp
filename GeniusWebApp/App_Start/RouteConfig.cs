@@ -14,6 +14,17 @@ namespace GeniusWebApp
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                "User",
+                "User/{id}",
+                new { controller = "GeniusUser", action = "Index" }
+            );
+            routes.MapRoute(
+                "Group",
+                "Group/{groupName}",
+                new { controller = "Group", action = "Index", groupName = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
@@ -21,3 +32,4 @@ namespace GeniusWebApp
         }
     }
 }
+

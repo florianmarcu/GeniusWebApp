@@ -1,12 +1,38 @@
-﻿@model GeniusWebApp.Models.Group 
+﻿
+@model List<GeniusWebApp.Models.Group>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Grupul @Model.Name</h1>
+<h1>@ViewBag.Name</h1>
 
-<h2>Descriere</h2>
-<br />
-<h3>@Model.Description</h3>
+@if (ViewBag.single != null && ViewBag.single == true)
+{
+    <h1>Grupul @Model.First().Name</h1>
+
+    <h2>Descriere</h2>
+    <br />
+
+    <h3>@Model.First().Description</h3>
+}
+
+else
+{
+    <h1>Grupuri:</h1>
+    foreach (var group in Model)
+    {
+        <div class="table-bordered" style="padding-left: 10px">
+            <a href="Group/@group.Name.ToLower()">
+                <h2>@group.Name</h2>
+                <p>@group.Description</p>
+            </a>
+        </div>
+        if (this.User.IsInRole("Administrator"))
+        {
+
+        }
+        <br />
+    }
+}
 
