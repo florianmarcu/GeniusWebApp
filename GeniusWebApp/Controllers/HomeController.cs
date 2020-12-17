@@ -72,5 +72,16 @@ namespace GeniusWebApp.Controllers
             }
 
         }
+
+        public ActionResult FindUserByName(string Input)
+        {
+
+            if (Input == "")
+                return RedirectToAction("Index");
+            else
+                return RedirectToAction("ShowAll", "GeniusUserProfile", new { Input = Input });
+
+            return View("Index");
+        }
     }
 }
