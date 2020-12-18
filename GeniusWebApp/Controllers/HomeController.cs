@@ -28,11 +28,6 @@ namespace GeniusWebApp.Controllers
             //             orderby @group.Name
             //             select @group;
 
-            var profile = from p in _db.UserProfiles
-                          where p.GeniusUserProfileId == 2
-                          select p;
-
-            System.Diagnostics.Debug.WriteLine(profile.ToList<UserProfile>()[0].User.Id);
 
             return View();
             //return View(groups.ToList());
@@ -81,15 +76,6 @@ namespace GeniusWebApp.Controllers
 
         }
 
-        public ActionResult FindUserByName(string Input)
-        {
-
-            if (Input == "")
-                return RedirectToAction("Index");
-            else
-                return RedirectToAction("ShowAll", "UserProfile", new { Input = Input });
-
-            return View("Index");
-        }
+        
     }
 }

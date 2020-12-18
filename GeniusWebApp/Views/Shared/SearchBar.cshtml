@@ -3,9 +3,10 @@
     ViewBag.Title = "SearchBar";
 }
 
-<form method="get" action="Home/FindUserByName">
+<form method="get" action="UserProfile/FindUserByName">
 
-    <input name="Input"/>
+    <input placeholder="First name" name="firstName"/>
+    <input placeholder="Last name" name="lastName"/>
     <button type="submit">Search</button>
 
 </form>

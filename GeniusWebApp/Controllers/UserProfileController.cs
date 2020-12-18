@@ -17,33 +17,30 @@ namespace GeniusWebApp.Controllers
             return View();
         }
 
-        public ActionResult ShowAll(string Input)
+
+        public ActionResult FindUserByName(string firstName, string lastName)
         {
-            String delimiters = " ,./<>?;':[]{}_=+`~\t1234567890!@#$%^&*()|";
 
-            var splitString = Input.Split(delimiters.ToCharArray());
-
-            if (splitString.Length > 2)
-            {
-                // some error
-            }
-
-            if (splitString.Length == 1)
-            {
-                var name = splitString[0].ToLower();
-
-                var matchProfiles = from profile in _db.UserProfiles
-                                    where profile.LastName.ToLower() == name || profile.FirstName.ToLower() == name
-                                    select profile;
-
-                return View(matchProfiles.ToList<UserProfile>());
-            }
+            if (firstName == "" || lastName == "")
+                return RedirectToAction("Index");
             else
-            {
+                return RedirectToAction("ShowAll", "UserProfile", new { firstName = firstName, lastName = lastName});
+        }
 
-            }
 
-            return View();
+        public ActionResult ShowAll(string firstName, string lastName)
+        {
+            System.Diagnostics.Debug.WriteLine(firstName);
+            System.Diagnostics.Debug.WriteLine(lastName);
+
+
+            var matchProfiles = from profile in _db.UserProfiles
+                                where profile.FirstName.ToLower() == firstName.ToLower() || profile.LastName.ToLower() == lastName.ToLower()
+                                select profile;
+
+            System.Diagnostics.Debug.WriteLine(matchProfiles.ToList<UserProfile>().Count);
+
+            return View(matchProfiles.ToList<UserProfile>());
         }
     }
 }
