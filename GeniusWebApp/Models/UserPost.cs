@@ -20,7 +20,7 @@ namespace GeniusWebApp.Models
         public string Image { get; set; } // I guess the path to the image, we'll change it later if it doesn't work
 
         [Required]
-        public virtual GeniusUser User { get; set; } // the user that makes the post
+        public virtual UserProfile Profile { get; set; } // the user that makes the post
         public virtual ICollection<Comment> Comments { get; set; } // the comments that appear in the post
     }
 }
