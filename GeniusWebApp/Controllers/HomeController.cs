@@ -24,12 +24,12 @@ namespace GeniusWebApp.Controllers
         public ActionResult Index()
         {
             /// Queryies all groups belonging to the group
-            //var groups = from @group in appDbContext.Groups
-            //             orderby @group.Name
-            //             select @group;
+            var groups = from @group in _db.Groups
+                         orderby @group.Name
+                         select @group;
 
 
-            return View();
+            return View(groups);
             //return View(groups.ToList());
         }
 

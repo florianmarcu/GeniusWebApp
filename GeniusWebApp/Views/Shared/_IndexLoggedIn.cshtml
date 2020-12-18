@@ -3,51 +3,36 @@
         Hello, @System.Web.HttpContext.Current.User.Identity.Name
     </div>
     <h1>
-        Favorite groups
+        Grupuri favorite:
     </h1>
-    <div class="list-group-horizontal">
+    <ul>
         @foreach (GeniusWebApp.Models.Group group in Model)
         {
-            <button class="list-group-item-action" style="width: 22rem;min-height: 130px; padding: 5px; margin: 5px">
-                <div class="card" style="width: 18rem;">
+        <li class="list-group-item-action">
+            <button  style="min-height: 130px; padding: 5px; margin: 5px">
+                <div class="card">
                     <div class="card-body">
                         <h5 class="card-title h2">@group.Name</h5>
                         <p class="card-text">@group.Description</p>-->
-                         
+
                     </div>
                 </div>
             </button>
-         }
-                    <!--<button class="list-group-item-action" style="width: 22rem;min-height: 130px; padding: 5px; margin: 5px">
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title h2">Group 1</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
-                        <!--</div>
-                        </div>
-                    </button>
-                    <button class="list-group-item-action" style="width: 22rem; min-height: 130px;padding: 5px; margin: 5px">
-                        <div class="card" style="width: 20rem;">
-                            <div class="card-body">
-                                <h5 class="card-title h2">Group 2</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-                        @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
-                        <!--</div>
-                        </div>
-                    </button>-->
-                        <a class="list-group-item-action" style="width: 22rem; min-height: 130px; padding: 5px; margin: 5px" href="/Home/NewGroup">
-                            <div class="card" style="width: 20rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title h2">Adauga un grup</h5>
-                                    <p class="card-text" style="font-size: 30px">+</p>
-                                </div>
-                            </div>
-                        </a>
+        </li>
+        }
+        <li class="list-group-item-action">
+            <a class="list-group-item-action" style=" min-height: 130px; padding: 5px; margin: 5px" href="/Home/NewGroup">
+                <div class="card" style="">
+                    <div class="card-body">
+                        <h5 class="card-title h2">Adauga un grup +</h5>
                     </div>
-                    <h1>
-                        All groups
-                    </h1>
-                    <ul class="list-group">
-                    </ul>
                 </div>
+            </a>
+        </li>
+    </ul>
+    <h1>
+        All groups
+    </h1>
+    <ul class="list-group">
+    </ul>
+</div>
