@@ -15,9 +15,11 @@ namespace GeniusWebApp.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext _db;
 
         public ManageController()
         {
+            _db = new ApplicationDbContext();
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -63,7 +65,11 @@ namespace GeniusWebApp.Controllers
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
+
             var userId = User.Identity.GetUserId();
+            var userProfile = (from profile in _db.UserProfiles.Where(user => user.UserId == userId)
+                              select profile).First();
+            ViewBag.UserProfile = userProfile;
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),

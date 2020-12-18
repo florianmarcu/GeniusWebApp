@@ -21,7 +21,6 @@ namespace GeniusWebApp.Controllers
         public ActionResult Index(string groupName)
         {
             ViewBag.Name = groupName;
-            Console.WriteLine(groupName);
             if (groupName != null) /// Prints only the desired group in the route
             {
                 var group = _db.Groups.Where(gr => gr.Name.ToLower() == groupName.ToLower());
@@ -43,6 +42,19 @@ namespace GeniusWebApp.Controllers
                              select gr;
                 return View(groups.ToList()); /// Should contain all the groups registered
             }
+        }
+        public ActionResult Delete(int id)
+        {
+            if (id == null)
+                System.Diagnostics.Debug.WriteLine("dasdad");
+            else
+            {
+                System.Diagnostics.Debug.WriteLine(id);
+            }
+            var group = _db.Groups.Find(id);
+            _db.Groups.Remove(group);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Group");
         }
     }
 }
