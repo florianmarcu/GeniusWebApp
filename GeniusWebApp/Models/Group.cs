@@ -17,5 +17,6 @@ namespace GeniusWebApp.Models
         //public int MembersCount { get; set; }
 
         public virtual ICollection<GeniusUser> GeniusUsers { get; set; }
+        public string CoverImage { get; set; }
     }
 }
