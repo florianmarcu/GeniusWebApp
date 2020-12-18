@@ -12,6 +12,7 @@ namespace GeniusWebApp.Models
     {
         [Key]
         public int GeniusUserProfileId { get; set; }
+
         public string ProfileImage { get; set; }
         public string CoverImage { get; set; }
 
@@ -19,12 +20,13 @@ namespace GeniusWebApp.Models
         public string Visibility { get; set; }
 
         [Required]
-        [StringLength(26)]
+        [StringLength(100)]
         public string FirstName { get; set; }
+
         [Required]
-        [StringLength(26)]
+        [StringLength(100)]
         public string LastName { get; set; }
-        [Required]
+
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<FriendRequest> FriendRequests { get; set; }
         public virtual ICollection<UserPost> UserPosts { get; set; }

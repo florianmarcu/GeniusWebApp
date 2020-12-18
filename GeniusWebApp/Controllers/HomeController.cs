@@ -9,7 +9,7 @@ namespace GeniusWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private ApplicationDbContext appDbContext = new ApplicationDbContext();
+        private ApplicationDbContext _db = new ApplicationDbContext();
 
         public HomeController()
         {
@@ -24,10 +24,18 @@ namespace GeniusWebApp.Controllers
         public ActionResult Index()
         {
             /// Queryies all groups belonging to the group
-            var groups = from @group in appDbContext.Groups
-                         orderby @group.Name
-                         select @group;
-            return View(groups.ToList());
+            //var groups = from @group in appDbContext.Groups
+            //             orderby @group.Name
+            //             select @group;
+
+            var profile = from p in _db.UserProfiles
+                          where p.GeniusUserProfileId == 2
+                          select p;
+
+            System.Diagnostics.Debug.WriteLine(profile.ToList<UserProfile>()[0].User.Id);
+
+            return View();
+            //return View(groups.ToList());
         }
 
         public ActionResult About()
@@ -58,10 +66,10 @@ namespace GeniusWebApp.Controllers
                     Name = name,
                     Description = description
                 };
-                appDbContext.Groups.Add(
+                _db.Groups.Add(
                     group
                 );
-                appDbContext.SaveChanges();
+                _db.SaveChanges();
                 //return Redirect("Group/Index/"+group.GroupId);
                 return Redirect("Index");
             }
