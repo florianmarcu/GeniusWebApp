@@ -14,14 +14,14 @@ namespace GeniusWebApp
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                "User",
-                "User/{id}",
-                new { controller = "GeniusUser", action = "Index" }
+                name: "User",
+                url: "User/{id}",
+                defaults: new { controller = "GeniusUser", action = "Index" }
             );
             routes.MapRoute(
-                "Group",
-                "Group/{groupName}",
-                new { controller = "Group", action = "Index", groupName = UrlParameter.Optional }
+                name: "Group",
+                url: "Group/{groupName}",
+                defaults: new { controller = "Group", action = "Index", groupName = UrlParameter.Optional }
             );
 
             routes.MapRoute(
