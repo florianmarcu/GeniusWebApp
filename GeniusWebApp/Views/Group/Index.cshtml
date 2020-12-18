@@ -5,16 +5,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>@ViewBag.Name</h1>
-
 @if (ViewBag.single != null && ViewBag.single == true)
 {
     <h1>Grupul @Model.First().Name</h1>
 
-    <h2>Descriere</h2>
+    <h2>Descriere:</h2>
     <br />
 
     <h3>@Model.First().Description</h3>
+    if (this.User.IsInRole("Admin"))
+    {
+        <a style="background-color: red; color: white">Sterge</a>
+    }
 }
 
 else
@@ -28,11 +30,12 @@ else
                 <p>@group.Description</p>
             </a>
         </div>
-        if (this.User.IsInRole("Administrator"))
+        if (this.User.IsInRole("Admin"))
         {
-
+            <a style="background-color: red; color: white" href="Group/Delete/@group.GroupId">Sterge</a>
         }
-        <br />
+
+
     }
 }
 

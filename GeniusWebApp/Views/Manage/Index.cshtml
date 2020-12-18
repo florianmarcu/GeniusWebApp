@@ -1,6 +1,9 @@
 ﻿@model GeniusWebApp.Models.IndexViewModel
 @{
     ViewBag.Title = "Manage";
+    GeniusWebApp.Models.UserProfile UserProfile = ViewBag.UserProfile;
+    ViewBag.TextBoxVisible = "hidden";
+    TempData.Add("ProfileImage", "");
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -30,13 +33,13 @@
         </dd>
         @*
             Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-             
+
              See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
                 for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-             
+
              Uncomment the following block after you have set up two-factor authentication
         *@
-        @*  
+        @*
             <dt>Phone Number:</dt>
             <dd>
                 @(Model.PhoneNumber ?? "None")
@@ -85,3 +88,34 @@
         </dd>
     </dl>
 </div>
+
+
+<h2>
+    Profilul tău
+</h2>
+<div class="container" style="padding-left: 20px">
+    <h3>Poză de profil</h3>
+    @if (UserProfile.ProfileImage == "")
+    {
+        <img src="@UserProfile.ProfileImage" class="img-circle" width="200" />
+
+    }
+    else
+    {
+        <img src="https://secondchancetinyhomes.org/wp-content/uploads/2016/09/empty-profile.png" class="img-circle" width="200" />
+    }
+    <br />
+    <br />
+    @Html.BeginForm("UpdateProfileImage", "UserProfile")
+    @*<div style="visibility:@ViewBag.TextBoxVisible">
+
+    </div>*@
+    @*<button onclick="@(ViewBag.TextBoxVisible="visible")">Schimba poza de profil</button>*@
+    @Html.TextBox("ProfileImage",TempData["ProfileImage"])
+    @Html.ActionLink("Introdu", "../UserProfile/UpdateProfileImage", TempData["ProfileImage"].ToString()); 
+    <h3>
+        @UserProfile.FirstName  @UserProfile.LastName
+    </h3>
+</div>
+
+

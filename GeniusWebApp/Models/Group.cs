@@ -16,6 +16,6 @@ namespace GeniusWebApp.Models
         public string Description { get; set; }
         //public int MembersCount { get; set; }
 
-        public virtual ICollection<GeniusUser> GeniusUsers { get; set; }
+        public virtual ICollection<UserProfile> UserProfiles { get; set; }
     }
 }
