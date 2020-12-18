@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GeniusWebApp.Models;
+using System.Data.Entity.Validation;
 
 namespace GeniusWebApp.Controllers
 {
@@ -17,9 +18,11 @@ namespace GeniusWebApp.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        ApplicationDbContext _db;
 
         public AccountController()
         {
+            _db = new ApplicationDbContext();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -159,6 +162,42 @@ namespace GeniusWebApp.Controllers
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
                     UserManager.AddToRole(user.Id, "LoggedUser");
+
+                    var profiles = _db.UserProfiles.OrderByDescending(u => u.GeniusUserProfileId);
+                    var nextId = (profiles.ToList<UserProfile>().Count == 0 ? 0 : profiles.ToList<UserProfile>().First().GeniusUserProfileId) + 1;
+
+                    var profile = new UserProfile
+                    {
+                        GeniusUserProfileId = nextId,
+                        Visibility = "public",
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        UserId = user.Id,
+                        //User = user
+                    };
+
+                    _db.UserProfiles.Add(profile);
+                    try
+                    {
+                        // Your code...
+                        // Could also be before try if you know the exception occurs in SaveChanges
+
+                        _db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        foreach (var eve in e.EntityValidationErrors)
+                        {
+                            System.Diagnostics.Debug.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                            foreach (var ve in eve.ValidationErrors)
+                            {
+                                System.Diagnostics.Debug.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                    ve.PropertyName, ve.ErrorMessage);
+                            }
+                        }
+                        throw;
+                    }
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link

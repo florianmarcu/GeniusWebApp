@@ -168,7 +168,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\GeniusUserController.cs" />
+    <Compile Include="Controllers\FriendRequestController.cs" />
+    <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -183,8 +184,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\FriendRequest.cs" />
-    <Compile Include="Models\GeniusUser.cs" />
-    <Compile Include="Models\GeniusUserProfile.cs" />
+    <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -255,6 +255,8 @@
     <Content Include="Views\Home\NewGroup.cshtml" />
     <Content Include="Views\Shared\_IndexLoggedIn.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
+    <Content Include="Views\Shared\SearchBar.cshtml" />
+    <Content Include="Views\UserProfile\ShowAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
