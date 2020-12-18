@@ -79,7 +79,7 @@ namespace GeniusWebApp.Controllers
             if (Input == "")
                 return RedirectToAction("Index");
             else
-                return RedirectToAction("ShowAll", "GeniusUserProfile", new { Input = Input });
+                return RedirectToAction("ShowAll", "UserProfile", new { Input = Input });
 
             return View("Index");
         }

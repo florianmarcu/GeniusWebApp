@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace GeniusWebApp.Controllers
 {
-    public class GeniusUserProfileController : Controller
+    public class UserProfileController : Controller
     { 
         ApplicationDbContext _db = new ApplicationDbContext();
     
@@ -32,11 +32,11 @@ namespace GeniusWebApp.Controllers
             {
                 var name = splitString[0].ToLower();
 
-                var matchProfiles = from profile in _db.GeniusUserProfiles
-                                    where profile.GeniusUser.LastName.ToLower() == name || profile.GeniusUser.FirstName.ToLower() == name
+                var matchProfiles = from profile in _db.UserProfiles
+                                    where profile.LastName.ToLower() == name || profile.FirstName.ToLower() == name
                                     select profile;
 
-                return View(matchProfiles.ToList<GeniusUserProfile>());
+                return View(matchProfiles.ToList<UserProfile>());
             }
             else
             {

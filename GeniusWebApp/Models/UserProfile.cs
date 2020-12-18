@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace GeniusWebApp.Models
 {
-    /// <summary>
-    ///  Prototype for the user of the app
-    /// </summary>
-    public class GeniusUser
+    public class UserProfile
     {
-        public int Id { get; set; }
+        [Key]
+        public int GeniusUserProfileId { get; set; }
+        public string ProfileImage { get; set; }
+        public string CoverImage { get; set; }
+
+        [RegularExpression(@"^(private|public)$", ErrorMessage = "Visibility not allowed")]
+        public string Visibility { get; set; }
+
         [Required]
         [StringLength(26)]
         public string FirstName { get; set; }
@@ -20,7 +25,6 @@ namespace GeniusWebApp.Models
         [StringLength(26)]
         public string LastName { get; set; }
         [Required]
-        public virtual GeniusUserProfile GeniusUserProfile { get; set; }
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<FriendRequest> FriendRequests { get; set; }
         public virtual ICollection<UserPost> UserPosts { get; set; }
@@ -28,5 +32,5 @@ namespace GeniusWebApp.Models
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; } // relationship with AspNetUsers table
     }
-    
+
 }

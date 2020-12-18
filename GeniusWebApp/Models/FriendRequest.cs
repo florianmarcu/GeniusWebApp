@@ -29,6 +29,6 @@ namespace GeniusWebApp.Models
 
         // Foreign key
         [Required]
-        public virtual GeniusUser User { get; set; } // the user that sent the friend request
+        public virtual UserProfile Profile { get; set; } // the user that sent the friend request
     }
 }
