@@ -6,6 +6,8 @@
     TempData.Add("ProfileImage", "");
 }
 
+<script src="~/Scripts/CheckBoxes.js", type="text/javascript"></script>
+
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
@@ -32,32 +34,32 @@
             @Html.ActionLink("Manage", "ManageLogins") ]
         </dd>
         @*
-            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+        Phone Numbers can used as a second factor of verification in a two-factor authentication system.
 
-             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+         See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+            for details on setting up this ASP.NET application to support two-factor authentication using SMS.
 
-             Uncomment the following block after you have set up two-factor authentication
+         Uncomment the following block after you have set up two-factor authentication
         *@
         @*
-            <dt>Phone Number:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
+        <dt>Phone Number:</dt>
+        <dd>
+            @(Model.PhoneNumber ?? "None")
+            @if (Model.PhoneNumber != null)
+            {
+                <br />
+                <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
-                    <br />
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
-                    }
+                    @Html.AntiForgeryToken()
+                    <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
                 }
-                else
-                {
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-                }
-            </dd>
+            }
+            else
+            {
+                <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+            }
+        </dd>
         *@
         <dt>Two-Factor Authentication:</dt>
         <dd>
@@ -66,32 +68,53 @@
                 for details on setting up this ASP.NET application to support two-factor authentication.
             </p>
             @*@if (Model.TwoFactor)
+            {
+                using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Enabled
-                        <input type="submit" value="Disable" class="btn btn-link" />
-                        </text>
-                    }
+                    @Html.AntiForgeryToken()
+                    <text>Enabled
+                    <input type="submit" value="Disable" class="btn btn-link" />
+                    </text>
+                }
+            }
+            else
+            {
+                using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <text>Disabled
+                    <input type="submit" value="Enable" class="btn btn-link" />
+                    </text>
+                }
+            }*@
+        </dd>
+
+        <dt>Visibility:</dt>
+        <dd>
+            <form method="post" action="/Manage/ChangeVisibility">
+                @if (UserProfile.Visibility == "private")
+                {
+                    <input type="checkbox" name="Visibility" checked value="true" />
+                    <label>Private</label>
+                    <input type="checkbox" name="Visibility" />
+                    <label>Public</label>
                 }
                 else
                 {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Disabled
-                        <input type="submit" value="Enable" class="btn btn-link" />
-                        </text>
-                    }
-                }*@
+                    <input type="checkbox" name="Visibility" value="true" />
+                    <label>Private</label>
+                    <input type="checkbox" name="Visibility" checked/>
+                    <label>Public</label>
+                }
+                <button type="submit">Save</button>
+            </form>
         </dd>
     </dl>
 </div>
 
 
 <h2>
-    Profilul tău
+    Your profile
 </h2>
 <div class="container" style="padding-left: 20px">
     <h3>Poză de profil</h3>
@@ -109,13 +132,14 @@
     @Html.BeginForm("UpdateProfileImage", "UserProfile")
     @*<div style="visibility:@ViewBag.TextBoxVisible">
 
-    </div>*@
+        </div>*@
     @*<button onclick="@(ViewBag.TextBoxVisible="visible")">Schimba poza de profil</button>*@
-    @Html.TextBox("ProfileImage",TempData["ProfileImage"])
-    @Html.ActionLink("Introdu", "../UserProfile/UpdateProfileImage", TempData["ProfileImage"].ToString()); 
+    @Html.TextBox("ProfileImage", TempData["ProfileImage"])
+    @Html.ActionLink("Introdu", "../UserProfile/UpdateProfileImage", TempData["ProfileImage"].ToString());
     <h3>
         @UserProfile.FirstName  @UserProfile.LastName
     </h3>
+    
 </div>
 
 

@@ -52,6 +52,31 @@ namespace GeniusWebApp.Controllers
             }
         }
 
+
+        [HttpPost]
+        public ActionResult ChangeVisibility(bool Visibility = false) // private == true; public == false
+        {
+            var userId = User.Identity.GetUserId();
+            var userProfile = (from userprofile in _db.UserProfiles
+                              where userprofile.User.Id == userId
+                              select userprofile).First<UserProfile>();
+
+
+            if (Visibility == false)
+                userProfile.Visibility = "public";
+            else userProfile.Visibility = "private";
+
+            var up = (from userprofile in _db.UserProfiles
+                               where userprofile.User.Id == userId
+                               select userprofile).First<UserProfile>();
+
+            _db.SaveChanges();
+
+
+            return View("SetPassword");
+        }
+
+
         //
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
