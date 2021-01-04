@@ -66,14 +66,10 @@ namespace GeniusWebApp.Controllers
                 userProfile.Visibility = "public";
             else userProfile.Visibility = "private";
 
-            var up = (from userprofile in _db.UserProfiles
-                               where userprofile.User.Id == userId
-                               select userprofile).First<UserProfile>();
-
             _db.SaveChanges();
 
 
-            return View("SetPassword");
+            return RedirectToAction("Index", "Home", null);
         }
 
 
