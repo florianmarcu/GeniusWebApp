@@ -1,0 +1,20 @@
+﻿@model GeniusWebApp.Models.UserProfile
+@{
+    ViewBag.Title = "Index";
+    var UserProfile = Model;
+}
+
+<h3>Poză de profil</h3>
+@if (UserProfile.ProfileImage == "")
+{
+    <img src="@UserProfile.ProfileImage" class="img-circle" width="200" />
+
+}
+else
+{
+    <img src="https://secondchancetinyhomes.org/wp-content/uploads/2016/09/empty-profile.png" class="img-circle" width="200" />
+}
+<br />
+
+<h2>@UserProfile.FirstName @UserProfile.LastName</h2>
+

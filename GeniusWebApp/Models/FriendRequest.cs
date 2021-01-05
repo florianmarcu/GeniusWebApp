@@ -28,7 +28,7 @@ namespace GeniusWebApp.Models
         public string Message { get; set; }
 
         // Foreign key
-        [Required]
-        public virtual UserProfile Profile { get; set; } // the user that sent the friend request
+        [Required] 
+        public virtual ICollection<UserProfile> Profile { get; set; } // the user that sent the friend request
     }
 }

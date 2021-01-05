@@ -14,6 +14,11 @@ namespace GeniusWebApp.Controllers
             return View();
         }
 
+        public ActionResult Create()
+        {
+            return RedirectToAction("Index", "UserProfile");
+        }
+
         
     }
 }

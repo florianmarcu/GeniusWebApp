@@ -248,15 +248,15 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\GeniusUser\Index.cshtml" />
-    <Content Include="Views\GeniusUser\New.cshtml" />
-    <Content Include="Views\GeniusUser\Random.cshtml" />
     <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Home\NewGroup.cshtml" />
     <Content Include="Views\Shared\_IndexLoggedIn.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Shared\SearchBar.cshtml" />
     <Content Include="Views\UserProfile\ShowAll.cshtml" />
+    <Content Include="Views\UserProfile\UserNotFound.cshtml" />
+    <Content Include="Views\UserProfile\Index.cshtml" />
+    <Content Include="Views\FriendRequest\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

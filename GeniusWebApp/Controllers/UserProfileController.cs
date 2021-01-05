@@ -25,11 +25,18 @@ namespace GeniusWebApp.Controllers
         {
 
             if (firstName == "" || lastName == "")
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("UserNotFound","UserProfile", new { firstName = firstName, lastName = lastName });
             else
                 return RedirectToAction("ShowAll", "UserProfile", new { firstName = firstName, lastName = lastName});
         }
 
+        public ActionResult UserNotFound(string firstName, string lastName)
+        {
+            List<string> model = new List<string>();
+            model.Add(firstName);
+            model.Add(lastName);
+            return View(model);
+        }
 
         public ActionResult ShowAll(string firstName, string lastName)
         {
