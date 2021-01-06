@@ -91,6 +91,12 @@ namespace GeniusWebApp.Controllers
             var userProfile = (from profile in _db.UserProfiles.Where(user => user.UserId == userId)
                               select profile).First();
             ViewBag.UserProfile = userProfile;
+
+            var userPosts = from post in _db.UserPosts
+                            where post.Profile.User.Id == userId
+                            select post;
+            ViewBag.userPosts = userPosts.ToList<UserPost>();
+
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),

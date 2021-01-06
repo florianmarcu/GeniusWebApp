@@ -139,7 +139,15 @@
     <h3>
         @UserProfile.FirstName  @UserProfile.LastName
     </h3>
+
+    
     
 </div>
 
+@foreach (var post in ViewBag.userPosts)
+{
+    <p>@post.Title</p>
+    <p>@post.Content</p>
+}
 
+<a href="/UserPost/New" class="btn btn-primary">New Post</a>
