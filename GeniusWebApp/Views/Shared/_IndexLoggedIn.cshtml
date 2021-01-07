@@ -1,36 +1,106 @@
-﻿<div class="">
-    
-    <h1>
-        Grupuri favorite:
-    </h1>
-    <ul>
-        @foreach (GeniusWebApp.Models.Group group in Model)
+﻿@using GeniusWebApp.Models;
+@{
+    List<FriendRequest> friendRequests = ViewBag.FriendRequests;
+    List<Tuple<FriendRequest, UserProfile>> friendRequestUserProfiles = new List<Tuple<FriendRequest,UserProfile>>();
+    List<UserProfile> friends = new List<UserProfile>();
+    if(ViewBag.friendRequestsUserProfiles != null)
+    {
+        friendRequestUserProfiles = ViewBag.friendRequestsUserProfiles;
+    }
+    if (ViewBag.friends != null)
+    {
+        friends = ViewBag.friends;
+    }
+}
+<div style="">
+    <div class="" style="float: left">
+        <h1> Cereri de prietenie</h1>
+        @if (friendRequests.Count != 0)
         {
-        <li class="list-group-item-action">
-            <button  style="min-height: 130px; padding: 5px; margin: 5px">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title h2">@group.Name</h5>
-                        <p class="card-text">@group.Description</p>-->
-
+            <div class="list-group">
+                @foreach (Tuple<FriendRequest, UserProfile> fr in friendRequestUserProfiles)
+                {
+                    <div class="list-group-item">
+                        <h2 style="">@fr.Item2.FirstName @fr.Item2.LastName</h2>
+                        @Html.ActionLink(linkText: "Acceptă",
+                                            actionName: "Accept",
+                                            controllerName: "FriendRequest",
+                                            routeValues: new { frId = fr.Item1.Id, upId = fr.Item2.GeniusUserProfileId },
+                                            htmlAttributes: new { @class = "btn" })
+                        @Html.ActionLink(linkText: "Refuză",
+                                            actionName: "Decline",
+                                            controllerName: "FriendRequest",
+                                            routeValues: new { fr = fr },
+                                            htmlAttributes: new { @class = "btn" })
                     </div>
-                </div>
-            </button>
-        </li>
+                }
+            </div>
+
         }
-        <li class="list-group-item-action">
+        else
+        {
+            <p style="margin-left: 20px">Nu ai nicio cerere de prietenie.</p>
+        }
+
+        @if (Model.Count != 0)
+        {
+            <h1>
+                Grupurile tale:
+            </h1>
+            <div class="list-group" style="width: 50vw">
+                @foreach (GeniusWebApp.Models.Group group in Model)
+                {
+                    <div class="list-group-item-action">
+                        <button style="min-height: 130px; padding: 5px; margin: 5px">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title h2">@group.Name</h5>
+                                    <p class="card-text">@group.Description</p>-->
+
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                }
+            </div>
+        }
+        <div class="list-group-item-action">
             <a class="list-group-item-action" style=" min-height: 130px; padding: 5px; margin: 5px" href="/Home/NewGroup">
                 <div class="card" style="">
                     <div class="card-body">
-                        <h5 class="card-title h2">Adauga un grup +</h5>
+                        <p class="card-title h2 btn" style="border:1px solid black">Adaugă un grup +</p>
                     </div>
                 </div>
             </a>
-        </li>
-    </ul>
-    <h1>
-        All groups
-    </h1>
-    <ul class="list-group">
-    </ul>
+        </div>
+
+        <br />
+
+        <h1>
+            Toate grupurile
+        </h1>
+        <ul class="list-group">
+        </ul>
+    </div>
+    <div class="" style="float: right">
+        <h1>Prieteni</h1>
+        @if (friends.Count != 0)
+        {
+            <div class="list-group" style="width: 20vw; padding: 10px; justify-content: flex-start;"></div>
+            foreach (UserProfile friend in friends)
+            {
+                <div class="list-group-item btn" style="padding-left: 0px ; border-width: 2px">
+                    @Html.ActionLink(
+                       linkText: friend.FirstName+" "+friend.LastName,
+                       actionName: "Index",
+                       controllerName: "UserProfile",
+                       routeValues: new { UserProfileId = friend.GeniusUserProfileId },
+                       htmlAttributes: new {@class = "btn"}
+                       )
+                    @*<text class="" style="font-size:15px;">@friend.FirstName @friend.LastName</text>*@
+                </div>
+            }
+        }
+    </div>
 </div>
+

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GeniusWebApp.Models;
+using Microsoft.AspNet.Identity;
 
 namespace GeniusWebApp.Controllers
 {
@@ -49,6 +50,49 @@ namespace GeniusWebApp.Controllers
             _db.Groups.Remove(group);
             _db.SaveChanges();
             return RedirectToAction("Index", "Group");
+        }
+        public ActionResult ShowAll()
+        {
+            string _currentUserId = User.Identity.GetUserId();
+            UserProfile _currentUserProfile = _db.UserProfiles.Where(profile => profile.UserId == _currentUserId).First();
+            var groupsQuery = _db.Groups.ToList();
+            var groups = groupsQuery.Select(
+                group => new Tuple<Group, bool>(group, _currentUserProfile.Groups.Contains(group))
+            );
+            return View(groups.ToList());
+        }
+        public ActionResult New()
+        {
+            Group group = new Group();
+            return View(group);
+        }
+        [HttpPost]
+        public ActionResult New(string name, string description)
+        {
+            string _currentUserId = User.Identity.GetUserId();
+            UserProfile _currentUserProfile = _db.UserProfiles.Where(profile => profile.UserId == _currentUserId).First();
+            try
+            {
+                Group group = new Group
+                {
+                    Name = name,
+                    Description = description
+                };
+                group.UserProfiles.Add(_currentUserProfile);
+                group.Administrators.Add(_currentUserProfile);
+                _db.Groups.Add(
+                    group
+                );
+                _db.SaveChanges();
+                //return Redirect("Group/Index/"+group.GroupId);
+                return Redirect("Index");
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                return Redirect("Index");
+            }
+
         }
     }
 }

@@ -15,18 +15,19 @@ namespace GeniusWebApp.Controllers
         ApplicationDbContext _db = new ApplicationDbContext();
     
         // GET: GeniusUserProfile
-        public ActionResult Index()
+        public ActionResult Index(int UserProfileId)
         {
-            return View();
+            UserProfile profile = _db.UserProfiles.Find(UserProfileId);
+            return View(profile);
         }
 
 
         public ActionResult FindUserByName(string firstName, string lastName)
         {
 
-            if (firstName == "" || lastName == "")
-                return RedirectToAction("UserNotFound","UserProfile", new { firstName = firstName, lastName = lastName });
-            else
+            //if (firstName == "" && lastName == "")
+            //    return RedirectToAction("UserNotFound","UserProfile", new { firstName = firstName, lastName = lastName });
+            //else
                 return RedirectToAction("ShowAll", "UserProfile", new { firstName = firstName, lastName = lastName});
         }
 
@@ -43,7 +44,8 @@ namespace GeniusWebApp.Controllers
             System.Diagnostics.Debug.WriteLine(firstName);
             System.Diagnostics.Debug.WriteLine(lastName);
 
-
+            ViewBag.firstName = firstName == null ? "" : firstName;
+            ViewBag.lastName = lastName == null ? "" : lastName;
             var matchProfiles = from profile in _db.UserProfiles
                                 where profile.FirstName.ToLower() == firstName.ToLower() || profile.LastName.ToLower() == lastName.ToLower()
                                 select profile;

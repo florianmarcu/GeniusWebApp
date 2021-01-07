@@ -2,18 +2,39 @@
 @{
     ViewBag.Title = "Show";
 }
-
+<head>
+    <link href="~/Content/all.css" rel="stylesheet"> <!--load all styles -->
+</head>
 @if (Model.Count == 0)
 {
     <p>No profile found</p>
 }
-
-@foreach(var profile in Model)
+else
 {
-    <p>@profile.LastName</p>
-    <p>@profile.FirstName</p>
+    <div>
+        <div class="panel-title" style="margin-left: 5vw; margin-top: 10px">
+            <p>Rezultatele căutării pentru "@ViewBag.firstName @ViewBag.lastName"</p>
+        </div>
+        <div class="list-group">
+            @foreach (var profile in Model)
+            {
+                <div class="list-group-item" style="margin-left: 10vw; font-size:20px; width: 70vw">
+                    @profile.LastName @profile.FirstName
+                @*<i class="fas fa-person-booth">
+                    @Html.ActionLink( linkText: "Adaugă", actionName: "Create",controllerName: "FriendRequest",profile.UserId)
+                    
+                </i>*@
+                
+                <a href="../FriendRequest/Create?userProfileId=@profile.GeniusUserProfileId">
+                    <i class="fas fa-person-booth"></i>
+                </a>
 
-    <br />
-    <br />
-    <br />
+                </div>
+                <br />
+                <br />
+                <br />
+
+            }
+        </div>
+    </div>
 }
