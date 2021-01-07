@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Show";
+}
+
+
+@foreach (var comment in ViewBag.comments)
+{
+    <p>@comment.Text</p>
+}
+
+<a href="/Comment/New/@ViewBag.postId">New comment</a>

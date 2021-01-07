@@ -33,7 +33,6 @@ namespace GeniusWebApp.Controllers
                                select userprofile).First<UserProfile>();
 
             post.Profile = userProfile;
-            System.Diagnostics.Debug.WriteLine(userProfile);
 
             _db.UserPosts.Add(post);
             _db.SaveChanges();
