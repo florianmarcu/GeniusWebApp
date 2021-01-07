@@ -7,6 +7,7 @@
 @foreach (var comment in ViewBag.comments)
 {
     <p>@comment.Text</p>
+    <img src="@comment.Image"/>
 }
 
 <a href="/Comment/New/@ViewBag.postId">New comment</a>
