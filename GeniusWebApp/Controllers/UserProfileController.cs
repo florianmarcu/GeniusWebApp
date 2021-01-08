@@ -14,44 +14,45 @@ namespace GeniusWebApp.Controllers
     public class UserProfileController : Controller
     { 
         ApplicationDbContext _db = new ApplicationDbContext();
-    
+
         // GET: GeniusUserProfile
-        public ActionResult Index(int UserProfileId)
+        public ActionResult Index()
         {
-            UserProfile profile = _db.UserProfiles.Find(UserProfileId);
-            return View(profile);
+            return View();
         }
 
 
         public ActionResult FindUserByName(string firstName, string lastName)
         {
 
-            //if (firstName == "" && lastName == "")
-            //    return RedirectToAction("UserNotFound","UserProfile", new { firstName = firstName, lastName = lastName });
-            //else
+            if (firstName == "" || lastName == "")
+                return RedirectToAction("Index","Home");
+            else
                 return RedirectToAction("ShowAll", "UserProfile", new { firstName = firstName, lastName = lastName});
         }
 
-        public ActionResult UserNotFound(string firstName, string lastName)
-        {
-            List<string> model = new List<string>();
-            model.Add(firstName);
-            model.Add(lastName);
-            return View(model);
-        }
 
         public ActionResult ShowAll(string firstName, string lastName)
         {
-            System.Diagnostics.Debug.WriteLine(firstName);
-            System.Diagnostics.Debug.WriteLine(lastName);
-
-            ViewBag.firstName = firstName == null ? "" : firstName;
-            ViewBag.lastName = lastName == null ? "" : lastName;
             var matchProfiles = from profile in _db.UserProfiles
                                 where profile.FirstName.ToLower() == firstName.ToLower() || profile.LastName.ToLower() == lastName.ToLower()
                                 select profile;
 
-            System.Diagnostics.Debug.WriteLine(matchProfiles.ToList<UserProfile>().Count);
+            var userId = User.Identity.GetUserId();
+
+            ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+            ViewBag.isAdmin = (userId == adminId);
+
+            if (userId != adminId)
+            {
+                var profileId = (from profile in _db.UserProfiles
+                                 where profile.User.Id == userId
+                                 select profile).FirstOrDefault().GeniusUserProfileId;
+                ViewBag.validProfile = profileId;
+            }
+            
+            
 
             return View(matchProfiles.ToList<UserProfile>());
         }
@@ -67,7 +68,7 @@ namespace GeniusWebApp.Controllers
            else // if succesful, return to Index
             {
                 var userId = User.Identity.GetUserId();
-                var userProfile = _db.UserProfiles.Where(user => user.UserId == userId).First();
+                var userProfile = _db.UserProfiles.Where(user => user.UserId == userId).Single();
                 userProfile.ProfileImage = ProfileImage;
                 if(TryUpdateModel(userProfile,"",new string[] { "ProfileImage" }))
                 {
@@ -84,25 +85,24 @@ namespace GeniusWebApp.Controllers
                 return RedirectToAction("Index", "Manage");
             }
         }
-        public ActionResult JoinGroup(int GroupId)
+
+        public ActionResult Show(int id)
         {
-            string _currentUserId = User.Identity.GetUserId();
-            UserProfile _currentUserProfile = _db.UserProfiles.Where(profile => profile.UserId == _currentUserId).First();
-            Group group = _db.Groups.Find(GroupId);
-            group.UserProfiles.Add(_currentUserProfile);
-            _currentUserProfile.Groups.Add(group);
-            _db.SaveChanges();
-            return RedirectToAction("Index", "Home");
-        }
-        public ActionResult LeaveGroup(int GroupId)
-        {
-            string _currentUserId = User.Identity.GetUserId();
-            UserProfile _currentUserProfile = _db.UserProfiles.Where(profile => profile.UserId == _currentUserId).First();
-            Group group = _db.Groups.Find(GroupId);
-            group.UserProfiles.Remove(_currentUserProfile);
-            _currentUserProfile.Groups.Remove(group);
-            _db.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            var userprofile = (from profile in _db.UserProfiles
+                               where profile.GeniusUserProfileId == id
+                               select profile).First();
+            ViewBag.UserProfile = userprofile;
+
+            var userId = User.Identity.GetUserId();
+
+            ViewBag.isValidUser = (userprofile.User.Id == userId);
+
+            ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+
+            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+            ViewBag.isAdmin = (userId == adminId);
+
+            return View();
         }
     }
 }

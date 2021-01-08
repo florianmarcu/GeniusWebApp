@@ -29,6 +29,8 @@ namespace GeniusWebApp.Models
 
         public DbSet<Group> Groups { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<UserPost> UserPosts { get; set; }
         public DbSet<FriendRequest> FriendRequests { get; set; }
 
         public static ApplicationDbContext Create()

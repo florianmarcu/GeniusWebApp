@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+}
+
+<form method="post" action="/UserPost/Edit/@ViewBag.Id">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <label>Title:</label>
+    <input name="Title" />
+    <label>Content:</label>
+    <input name="Content" />
+    <label>Image:</label>
+    <input name="Image" />
+    <button type="submit">Submit</button>
+</form>
+
