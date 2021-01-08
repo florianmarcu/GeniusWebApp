@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GeniusWebApp.Models;
 
+
 namespace GeniusWebApp.Controllers
 {
     [Authorize]
@@ -91,6 +92,17 @@ namespace GeniusWebApp.Controllers
             var userProfile = (from profile in _db.UserProfiles.Where(user => user.UserId == userId)
                               select profile).First();
             ViewBag.UserProfile = userProfile;
+
+            var userPosts = from post in _db.UserPosts
+                            where post.Profile.User.Id == userId
+                            select post;
+            ViewBag.userPosts = userPosts.ToList<UserPost>();
+
+            ViewBag.isValidUser = (userProfile.User.Id == userId);
+
+            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+            ViewBag.isAdmin = (userId == adminId);
+
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),

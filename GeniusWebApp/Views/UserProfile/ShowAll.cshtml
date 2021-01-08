@@ -8,10 +8,21 @@
     <p>No profile found</p>
 }
 
-@foreach(var profile in Model)
+@foreach (var profile in Model)
 {
     <p>@profile.LastName</p>
     <p>@profile.FirstName</p>
+
+    if (ViewBag.isAdmin || ViewBag.validProfile == profile.GeniusUserProfileId || profile.Visibility == "public") // can access
+    {
+        <a href="/UserProfile/Show/@profile.GeniusUserProfileId">View</a>
+    }
+    else
+    {
+        <a href="/">View</a>
+    }
+
+
 
     <br />
     <br />

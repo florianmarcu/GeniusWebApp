@@ -8,12 +8,13 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data;
 
+
 namespace GeniusWebApp.Controllers
 {
     public class UserProfileController : Controller
     { 
         ApplicationDbContext _db = new ApplicationDbContext();
-    
+
         // GET: GeniusUserProfile
         public ActionResult Index()
         {
@@ -33,15 +34,25 @@ namespace GeniusWebApp.Controllers
 
         public ActionResult ShowAll(string firstName, string lastName)
         {
-            System.Diagnostics.Debug.WriteLine(firstName);
-            System.Diagnostics.Debug.WriteLine(lastName);
-
-
             var matchProfiles = from profile in _db.UserProfiles
                                 where profile.FirstName.ToLower() == firstName.ToLower() || profile.LastName.ToLower() == lastName.ToLower()
                                 select profile;
 
-            System.Diagnostics.Debug.WriteLine(matchProfiles.ToList<UserProfile>().Count);
+            var userId = User.Identity.GetUserId();
+
+            ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+            ViewBag.isAdmin = (userId == adminId);
+
+            if (userId != adminId)
+            {
+                var profileId = (from profile in _db.UserProfiles
+                                 where profile.User.Id == userId
+                                 select profile).FirstOrDefault().GeniusUserProfileId;
+                ViewBag.validProfile = profileId;
+            }
+            
+            
 
             return View(matchProfiles.ToList<UserProfile>());
         }
@@ -73,6 +84,25 @@ namespace GeniusWebApp.Controllers
                 }
                 return RedirectToAction("Index", "Manage");
             }
+        }
+
+        public ActionResult Show(int id)
+        {
+            var userprofile = (from profile in _db.UserProfiles
+                               where profile.GeniusUserProfileId == id
+                               select profile).First();
+            ViewBag.UserProfile = userprofile;
+
+            var userId = User.Identity.GetUserId();
+
+            ViewBag.isValidUser = (userprofile.User.Id == userId);
+
+            ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+
+            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+            ViewBag.isAdmin = (userId == adminId);
+
+            return View();
         }
     }
 }
