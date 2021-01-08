@@ -19,23 +19,15 @@ namespace GeniusWebApp.Controllers
         }
 
         // GET: Group
-        public ActionResult Index(string groupName)
+        public ActionResult Index(int? GroupId)
         {
-            ViewBag.Name = groupName;
-            if (groupName != null) /// Prints only the desired group in the route
+            //ViewBag.Name = ;
+            if (GroupId != null) /// Prints only the desired group in the route
             {
-                var group = _db.Groups.Where(gr => gr.Name.ToLower() == groupName.ToLower());
-                if (group == null || group.Count() == 0)
+                var group = _db.Groups.Find(GroupId);
+                if (group == null)
                     return HttpNotFound();
-                if (group.Count() == 1)
-                {
-                    ViewBag.single = true;
-                }
-                else
-                {
-                    ViewBag.single = false;
-                }
-                return View(group.ToList()); /// Should contain only one group
+                return View(group); /// Should contain only one group
             }
             else /// Prints out all groups registered
             {
@@ -83,6 +75,7 @@ namespace GeniusWebApp.Controllers
                 _db.Groups.Add(
                     group
                 );
+                _currentUserProfile.Groups.Add(group);
                 _db.SaveChanges();
                 //return Redirect("Group/Index/"+group.GroupId);
                 return Redirect("Index");

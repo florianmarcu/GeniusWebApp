@@ -4,7 +4,7 @@
     List<Tuple<Group,bool>> groups = Model;
 }
 
-<div>Toate grupurile:</div>
+<div class="panel-title" style="padding: 20px">Toate grupurile:</div>
 @if(groups.Count != 0)
 {
     <div class="list-group" style="width: 50vw">
@@ -14,12 +14,20 @@
                 @if(!group.Item2)
                 {
                     <p>@group.Item1.Name</p>
+                    @Html.ActionLink(
+                        linkText: "Alătură-te",
+                        actionName: "JoinGroup",
+                        controllerName: "UserProfile",
+                        routeValues: new {groupId = group.Item1.GroupId},
+                        htmlAttributes: new { }
+                    )
                 }
                 else
                 {
                     <p class="disabled">@group.Item1.Name </p>
                     <p>Faci deja parte din acest grup</p>
                 }
+                <br />
             </div>
         }
     </div>

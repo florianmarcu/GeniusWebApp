@@ -18,9 +18,10 @@ namespace GeniusWebApp.Models
         public string Content { get; set; }
 
         public string Image { get; set; } // I guess the path to the image, we'll change it later if it doesn't work
-
         [Required]
-        public virtual UserProfile Profile { get; set; } // the user that makes the post
-        public virtual ICollection<Comment> Comments { get; set; } // the comments that appear in the post
+        public int UserProfileId { get; set; }
+        [Required]
+        public UserProfile UserProfile { get; set; } // the user that makes the post
+        public ICollection<Comment> Comments { get; set; } // the comments that appear in the post
     }
 }

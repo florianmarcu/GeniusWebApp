@@ -15,8 +15,8 @@ namespace GeniusWebApp.Models
         [MaxLength(1000)]
         public string Text { get; set; }
         public string Image { get; set; } // same as UserPost
-
+        public int UserPostId { get; set; }
         [Required]
-        public virtual UserPost Post { get; set; } // the post it appears in
+        public virtual UserPost UserPost { get; set; } // the post it appears in
     }
 }

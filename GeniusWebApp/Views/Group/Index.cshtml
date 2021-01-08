@@ -1,21 +1,74 @@
-﻿
-@model List<GeniusWebApp.Models.Group>
+﻿<link rel="stylesheet" href="~/Content/all.css">
+<link rel="stylesheet" href="~/Content/all.min.css">
+@using GeniusWebApp.Models
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    bool single = true;
+    try
+    {
+        if (Model.Count > 0)
+        {
+            single = false;
+        }
+
+    }
+    catch (Exception exc)
+    {
+        single = true;
+    }
 }
 
-@if (ViewBag.single != null && ViewBag.single == true)
+@if (single)
 {
-    <h1>Grupul @Model.First().Name</h1>
+    <div style="display: inline">
 
+        <h1>Grupul @Model.Name</h1>
+        @Html.ActionLink(
+        linkText: "Ieși din grup",
+        actionName: "LeaveGroup",
+        controllerName: "UserProfile",
+        routeValues: new { GroupId = Model.GroupId },
+        htmlAttributes: new { @style = " color: red" }
+        )
+
+    </div>
     <h2>Descriere:</h2>
     <br />
 
-    <h3>@Model.First().Description</h3>
+    <p>@Model.Description</p>
     if (this.User.IsInRole("Admin"))
     {
-        <a style="background-color: red; color: white">Sterge</a>
+        <a style="background-color: red; color: white;">Sterge</a>
+    }
+    <br />
+    <h2>Postări</h2>
+    <br />
+
+    @Html.ActionLink(
+            linkText: "Creează o postare",
+            actionName: "CreateGroupPost",
+            controllerName: "UserPost",
+            routeValues: new { GroupId = Model.GroupId },
+            htmlAttributes: new { @style = "background-color: red; color: white" }
+            )
+    if (Model.UserPosts.Count != 0)
+    {
+        <div class="list-group">
+            @foreach (UserPost post in Model.UserPosts)
+            {
+                <div class="list-group-item" style="width: 50vw">
+                    @*<p style="padding: 10px">@post.UserProfile.FirstName @post.UserProfile.LastName</p>*@
+                    <p>@post.Title</p>
+                    <br />
+                    <p>@post.Content</p>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p> Nu există nicio postare.</p>
     }
 }
 
@@ -32,9 +85,15 @@ else
         </div>
         if (this.User.IsInRole("Admin"))
         {
-            <a style="background-color: red; color: white" href="Group/Delete/@group.GroupId">Sterge</a>
+            @Html.ActionLink(
+            linkText: "Șterge",
+            actionName: "Delete",
+            controllerName: "Group",
+            routeValues: new { GroupId = group.GroupId },
+            htmlAttributes: new { @style = "background-color: red; color: white" }
+            )
         }
-
+        <br />
 
     }
 }

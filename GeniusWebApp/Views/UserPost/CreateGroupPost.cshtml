@@ -1,0 +1,31 @@
+﻿@model GeniusWebApp.Models.GroupPost
+@{
+    ViewBag.Title = "CreateGroupPost";
+    TempData.Add("GroupId", ViewBag.GroupId);
+}
+
+<h2>Creează o postare:</h2>
+
+@using (Html.BeginForm("CreateGroupPost", "UserPost"))
+{
+    <div class="form-group">
+        @Html.LabelFor(group => group.Title)
+        @Html.TextBoxFor(group => group.Title, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(group => group.Content)
+        @Html.TextBoxFor(group => group.Content, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">GATA</button>
+    @*<form method="post" action="/Home/NewGroup">
+            <label>Nume</label>
+            <br />
+            <input type="text" name="Name" />
+            <br /><br />
+            <label>Descriere</label>
+            <br />
+            <input type="text" name="Description" />
+            <br /><br />
+            <button type="submit">Adauga grup</button>
+        </form>*@
+}

@@ -51,18 +51,22 @@
                 @foreach (GeniusWebApp.Models.Group group in Model)
                 {
                     <div class="list-group-item-action">
-                        <button style="min-height: 130px; padding: 5px; margin: 5px">
+                        <a href="/Group/Show/@group.GroupId" class="btn" style="border: 1px solid black; min-height: 130px; padding: 5px; margin: 5px">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title h2">@group.Name</h5>
-                                    <p class="card-text">@group.Description</p>-->
+                                    <p class="card-text">@group.Description</p>
 
                                 </div>
                             </div>
-                        </button>
+                        </a>
                     </div>
                 }
             </div>
+        }
+        else
+        {
+            <p>Nu aparți niciunui grup!</p>
         }
         <div class="list-group-item-action">
             <a class="list-group-item-action" style=" min-height: 130px; padding: 5px; margin: 5px" href="/Home/NewGroup">

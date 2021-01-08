@@ -28,7 +28,7 @@ namespace GeniusWebApp
             /// Changed path from "Group/{groupName}" to "Group/Show/{groupName}"
             routes.MapRoute(
                 name: "Group",
-                url: "Group/Show/{groupName}",
+                url: "Group/Show/{GroupId}",
                 defaults: new { controller = "Group", action = "Index", groupName = UrlParameter.Optional }
             );
 

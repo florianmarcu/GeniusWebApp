@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data;
 
+
 namespace GeniusWebApp.Controllers
 {
     public class UserProfileController : Controller
@@ -66,7 +67,7 @@ namespace GeniusWebApp.Controllers
            else // if succesful, return to Index
             {
                 var userId = User.Identity.GetUserId();
-                var userProfile = _db.UserProfiles.Where(user => user.UserId == userId).Single();
+                var userProfile = _db.UserProfiles.Where(user => user.UserId == userId).First();
                 userProfile.ProfileImage = ProfileImage;
                 if(TryUpdateModel(userProfile,"",new string[] { "ProfileImage" }))
                 {
@@ -82,6 +83,26 @@ namespace GeniusWebApp.Controllers
                 }
                 return RedirectToAction("Index", "Manage");
             }
+        }
+        public ActionResult JoinGroup(int GroupId)
+        {
+            string _currentUserId = User.Identity.GetUserId();
+            UserProfile _currentUserProfile = _db.UserProfiles.Where(profile => profile.UserId == _currentUserId).First();
+            Group group = _db.Groups.Find(GroupId);
+            group.UserProfiles.Add(_currentUserProfile);
+            _currentUserProfile.Groups.Add(group);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+        public ActionResult LeaveGroup(int GroupId)
+        {
+            string _currentUserId = User.Identity.GetUserId();
+            UserProfile _currentUserProfile = _db.UserProfiles.Where(profile => profile.UserId == _currentUserId).First();
+            Group group = _db.Groups.Find(GroupId);
+            group.UserProfiles.Remove(_currentUserProfile);
+            _currentUserProfile.Groups.Remove(group);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
