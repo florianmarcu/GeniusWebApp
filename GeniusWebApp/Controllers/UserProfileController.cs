@@ -16,9 +16,10 @@ namespace GeniusWebApp.Controllers
         ApplicationDbContext _db = new ApplicationDbContext();
 
         // GET: GeniusUserProfile
-        public ActionResult Index()
+        public ActionResult Index(int UserProfileId)
         {
-            return View();
+            UserProfile profile = _db.UserProfiles.Find(UserProfileId);
+            return View(profile);
         }
 
 
@@ -56,7 +57,13 @@ namespace GeniusWebApp.Controllers
 
             return View(matchProfiles.ToList<UserProfile>());
         }
-
+        public ActionResult UserNotFound(string firstName, string lastName)
+        {
+            List<string> model = new List<string>();
+            model.Add(firstName);
+            model.Add(lastName);
+            return View(model);
+        }
         public ActionResult UpdateProfileImage(string ProfileImage)
         {
             //if(ProfileImage )
@@ -103,6 +110,27 @@ namespace GeniusWebApp.Controllers
             ViewBag.isAdmin = (userId == adminId);
 
             return View();
+        }
+
+        public ActionResult JoinGroup(int GroupId)
+        {
+            string _currentUserId = User.Identity.GetUserId();
+            UserProfile _currentUserProfile = _db.UserProfiles.Where(profile => profile.UserId == _currentUserId).First();
+            Group group = _db.Groups.Find(GroupId);
+            group.UserProfiles.Add(_currentUserProfile);
+            _currentUserProfile.Groups.Add(group);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+        public ActionResult LeaveGroup(int GroupId)
+        {
+            string _currentUserId = User.Identity.GetUserId();
+            UserProfile _currentUserProfile = _db.UserProfiles.Where(profile => profile.UserId == _currentUserId).First();
+            Group group = _db.Groups.Find(GroupId);
+            group.UserProfiles.Remove(_currentUserProfile);
+            _currentUserProfile.Groups.Remove(group);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

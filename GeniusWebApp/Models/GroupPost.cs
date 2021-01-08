@@ -7,6 +7,10 @@ namespace GeniusWebApp.Models
 {
     public class GroupPost : UserPost
     {
+        public GroupPost()
+        {
+            IsGroupPost = true;
+        }
         public int GroupId { get; set; }
         public Group Group { get; set; }
     }
