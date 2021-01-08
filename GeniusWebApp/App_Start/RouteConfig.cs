@@ -13,15 +13,23 @@ namespace GeniusWebApp
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //routes.MapRoute(
+            //    name: "AcceptFriendRequest",
+            //    url: "FriendRequest/Accept/{object}",
+            //    template:
+            //    //defaults: new {controller = "FriendRequest/"}
+            //);
+
             routes.MapRoute(
-                "User",
-                "User/{id}",
-                new { controller = "GeniusUser", action = "Index" }
+                name: "User",
+                url: "User/{id}",
+                defaults: new { controller = "GeniusUser", action = "Index" }
             );
+            /// Changed path from "Group/{groupName}" to "Group/Show/{groupName}"
             routes.MapRoute(
-                "Group",
-                "Group/{groupName}",
-                new { controller = "Group", action = "Index", groupName = UrlParameter.Optional }
+                name: "Group",
+                url: "Group/Show/{GroupId}",
+                defaults: new { controller = "Group", action = "Index", groupName = UrlParameter.Optional }
             );
 
             routes.MapRoute(

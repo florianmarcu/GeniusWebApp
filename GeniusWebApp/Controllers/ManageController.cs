@@ -94,7 +94,7 @@ namespace GeniusWebApp.Controllers
             ViewBag.UserProfile = userProfile;
 
             var userPosts = from post in _db.UserPosts
-                            where post.Profile.User.Id == userId
+                            where post.UserProfile.User.Id == userId && post.IsGroupPost != true
                             select post;
             ViewBag.userPosts = userPosts.ToList<UserPost>();
 
