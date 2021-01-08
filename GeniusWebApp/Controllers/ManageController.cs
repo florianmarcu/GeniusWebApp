@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GeniusWebApp.Models;
 
+
 namespace GeniusWebApp.Controllers
 {
     [Authorize]
@@ -96,6 +97,11 @@ namespace GeniusWebApp.Controllers
                             where post.Profile.User.Id == userId
                             select post;
             ViewBag.userPosts = userPosts.ToList<UserPost>();
+
+            ViewBag.isValidUser = (userProfile.User.Id == userId);
+
+            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+            ViewBag.isAdmin = (userId == adminId);
 
             var model = new IndexViewModel
             {

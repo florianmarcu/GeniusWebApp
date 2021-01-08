@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using GeniusWebApp.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace GeniusWebApp.Controllers
 {
@@ -27,6 +29,8 @@ namespace GeniusWebApp.Controllers
         [HttpPost]
         public ActionResult New(UserPost post)
         {
+
+
             var userId = User.Identity.GetUserId();
             var userProfile = (from userprofile in _db.UserProfiles
                                where userprofile.User.Id == userId
@@ -49,14 +53,54 @@ namespace GeniusWebApp.Controllers
         }
 
         [HttpDelete]
-        public ActionResult Delete(int GeniusUserProfileId)
+        public ActionResult Delete(int id)
         {
-            return View();
+            var userpost = (from post in _db.UserPosts
+                            where post.Id == id
+                            select post).First();
+
+            _db.UserPosts.Remove(userpost);
+
+            _db.SaveChanges();
+
+            var userId = User.Identity.GetUserId();
+
+            ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+
+            if (adminId == userId)
+                return RedirectToAction("Index", "Home");
+
+            return RedirectToAction("Index", "Manage");
         }
 
         [HttpPut]
-        public ActionResult Edit()
+        public ActionResult Edit(UserPost post)
         {
+            var userpost = (from p in _db.UserPosts
+                            where p.Id == post.Id
+                            select p).First();
+
+            userpost.Title = post.Title;
+            userpost.Content = post.Content;
+            userpost.Image = userpost.Image;
+
+            _db.SaveChanges();
+
+            var userId = User.Identity.GetUserId();
+
+            ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+
+            if (adminId == userId)
+                return RedirectToAction("Index", "Home");
+
+            return RedirectToAction("Index", "Manage");
+        }
+
+        public ActionResult Edit(int id)
+        {
+            ViewBag.Id = id;
             return View();
         }
     }

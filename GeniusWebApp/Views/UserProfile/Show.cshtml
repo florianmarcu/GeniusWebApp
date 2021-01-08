@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Show";
+    GeniusWebApp.Models.UserProfile UserProfile = ViewBag.UserProfile;
+}
+
+<h2>
+    Your profile
+</h2>
+<div class="container" style="padding-left: 20px">
+    <h3>Poză de profil</h3>
+    @if (UserProfile.ProfileImage == "")
+    {
+        <img src="@UserProfile.ProfileImage" class="img-circle" width="200" />
+
+    }
+    else
+    {
+        <img src="https://secondchancetinyhomes.org/wp-content/uploads/2016/09/empty-profile.png" class="img-circle" width="200" />
+    }
+    <br />
+    <br />
+
+    <h3>
+        @UserProfile.FirstName  @UserProfile.LastName
+    </h3>
+
+
+
+</div>
+
+@foreach (var post in UserProfile.UserPosts)
+{
+    <p>@post.Title</p>
+    <p>@post.Content</p>
+    <img src="@post.Image" />
+    <a href="/Comment/Show/@post.Id">Comments</a>
+
+    if (ViewBag.isAdmin || ViewBag.isValidUser)
+    {
+        <a href="/UserPost/Edit/@post.Id">Edit</a>
+
+        <form method="post" action="/UserPost/Delete/@post.Id">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button type="submit">Delete</button>
+        </form>
+    }
+}
+
+@if (ViewBag.isValidUser)
+{
+    <a href="/UserPost/New" class="btn btn-primary">New Post</a>
+}

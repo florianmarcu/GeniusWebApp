@@ -6,8 +6,23 @@
 
 @foreach (var comment in ViewBag.comments)
 {
+    <p>@comment.LastName</p>
+    <p>@comment.FirstName</p>
     <p>@comment.Text</p>
     <img src="@comment.Image"/>
+
+    if(ViewBag.currentUserId == comment.UserId || ViewBag.isAdmin)
+    {
+        <a href="/Comment/Edit/@comment.Id">Edit</a>
+
+        <form method="post" action="/Comment/Delete/@comment.Id">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button type="submit">Delete</button>
+        </form>
+    }
 }
 
-<a href="/Comment/New/@ViewBag.postId">New comment</a>
+@if (ViewBag.isAdmin == false)
+{
+    <a href="/Comment/New/@ViewBag.postId">New comment</a>
+}
