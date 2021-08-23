@@ -4,10 +4,8 @@
 }
 
 <form method="post" action="/Comment/New">
-    <input type="hidden" name="Id" value="@ViewBag.postId"/>
+    <input type="hidden" name="_postId" value="@ViewBag.postId"/>
     <label>Content:</label>
     <input name="Text"/>
-    <label>Image:</label>
-    <input name="Image"/>
     <button type="Submit">Submit</button>
 </form>

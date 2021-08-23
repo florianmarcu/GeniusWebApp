@@ -68,7 +68,7 @@ namespace GeniusWebApp.Controllers
             var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
 
             if (adminId == userId)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("IndexAdmin", "Home");
 
             return RedirectToAction("Index", "Manage");
         }
@@ -82,7 +82,6 @@ namespace GeniusWebApp.Controllers
 
             userpost.Title = post.Title;
             userpost.Content = post.Content;
-            userpost.Image = post.Image;
 
             _db.SaveChanges();
 
@@ -92,7 +91,7 @@ namespace GeniusWebApp.Controllers
             var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
 
             if (adminId == userId)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("IndexAdmin", "Home");
 
             return RedirectToAction("Index", "Manage");
         }
@@ -116,12 +115,10 @@ namespace GeniusWebApp.Controllers
             try
             {
                 Group group = _db.Groups.Find((int)TempData["GroupId"]);
-                GroupPost newPost = new GroupPost
+                UserPost newPost = new UserPost
                 {
                     Title = Title,
                     Content = Content,
-                    Group = group,
-                    GroupId = (int)TempData["GroupId"],
                     UserProfileId = _currentUserProfile.GeniusUserProfileId,
                     UserProfile = _currentUserProfile,
                     IsGroupPost = true

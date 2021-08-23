@@ -102,7 +102,7 @@ namespace GeniusWebApp.Controllers
 
             var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
             ViewBag.isAdmin = (userId == adminId);
-
+            
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
@@ -111,6 +111,7 @@ namespace GeniusWebApp.Controllers
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
+
             return View(model);
         }
 

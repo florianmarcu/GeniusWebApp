@@ -168,7 +168,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\FriendRequestController.cs" />
+    <Compile Include="Controllers\UserPostController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -184,6 +186,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\FriendRequest.cs" />
+    <Compile Include="Models\GroupPost.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -193,6 +196,13 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-GeniusWebApp-20201215050952.mdf" />
+    <Content Include="App_Data\aspnet-GeniusWebApp-20201215050952_log.ldf">
+      <DependentUpon>aspnet-GeniusWebApp-20201215050952.mdf</DependentUpon>
+    </Content>
+    <Content Include="Content\all.css" />
+    <Content Include="Content\all.min.css" />
+    <Content Include="Content\bootstrap-cyborg.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -258,10 +268,19 @@
     <Content Include="Views\UserProfile\UserNotFound.cshtml" />
     <Content Include="Views\UserProfile\Index.cshtml" />
     <Content Include="Views\FriendRequest\Index.cshtml" />
+    <Content Include="Views\Comment\Edit.cshtml" />
+    <Content Include="Views\Comment\New.cshtml" />
+    <Content Include="Views\Comment\Show.cshtml" />
+    <Content Include="Views\Group\New.cshtml" />
+    <Content Include="Views\Group\ShowAll.cshtml" />
+    <Content Include="Views\UserPost\CreateGroupPost.cshtml" />
+    <Content Include="Views\UserPost\Edit.cshtml" />
+    <Content Include="Views\UserPost\New.cshtml" />
+    <Content Include="Views\UserProfile\Show.cshtml" />
+    <Content Include="Views\UserProfile\AccessDenied.cshtml" />
+    <Content Include="Views\Home\IndexAdmin.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

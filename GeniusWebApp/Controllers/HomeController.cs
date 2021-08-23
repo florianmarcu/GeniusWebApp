@@ -5,30 +5,17 @@ using System.Web;
 using System.Web.Mvc;
 using GeniusWebApp.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+
 namespace GeniusWebApp.Controllers
 {
     public class HomeController : Controller
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
-        string currentUserId;
-        private UserProfile _loggedUserProfile;
-        public HomeController()
+
+        public ActionResult IndexAdmin()
         {
-            try
-            {
-                currentUserId = User.Identity.GetUserId();
-                _loggedUserProfile = _db.UserProfiles.Where(profile => profile.UserId == currentUserId).First();
-            }
-            catch(Exception exc)
-            {
-                return;
-            }
-            // _userDb = new GeniusUserDbContext();
-        }
-        protected override void Dispose(bool disposable)
-        {
-            //_applicationDb.Dispose();
-            // _userDb.Dispose();
+            return View();
         }
 
         public ActionResult Index()
@@ -40,8 +27,19 @@ namespace GeniusWebApp.Controllers
             List<Group> groups = new List<Group>();
 
             if (User.Identity.IsAuthenticated)
-            { 
-                if(_loggedUserProfile == null || currentUserId == null)
+            {
+                ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+                var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+
+                string currentUserId = User.Identity.GetUserId();
+
+                if(currentUserId == adminId)
+                {
+                    return RedirectToAction("IndexAdmin");
+                }
+
+                UserProfile _loggedUserProfile = _db.UserProfiles.Where(profile => profile.UserId == currentUserId).First();
+                if (_loggedUserProfile == null || currentUserId == null)
                 {
                     currentUserId = User.Identity.GetUserId();
                     _loggedUserProfile = _db.UserProfiles.Where(profile => profile.UserId == currentUserId).First();
@@ -52,13 +50,13 @@ namespace GeniusWebApp.Controllers
                 ViewBag.friends = friends;
 
                 var friendRequests = _loggedUserProfile.FriendRequests.Where(fr => fr.Accepted == null);
-                if(friendRequests == null || friendRequests.Count() != 0 )
+                if (friendRequests == null || friendRequests.Count() != 0)
                 {
                     var frUserProfiles = friendRequests.Join(
                         _db.UserProfiles,
                         frs => frs.SenderUserProfileId,
                         ups => ups.GeniusUserProfileId,
-                        (frs,ups) => new Tuple<FriendRequest,UserProfile>(frs,ups)
+                        (frs, ups) => new Tuple<FriendRequest, UserProfile>(frs, ups)
                         );
                     ViewBag.friendRequestsUserProfiles = frUserProfiles.ToList();
                 }
@@ -90,15 +88,21 @@ namespace GeniusWebApp.Controllers
         {
             string _currentUserId = User.Identity.GetUserId();
             UserProfile _currentUserProfile = _db.UserProfiles.Where(profile => profile.UserId == _currentUserId).First();
+            
             try
             {
                 Group group = new Group
                 {
                     Name = name,
-                    Description = description
+                    Description = description,
+                    UserProfiles = new List<UserProfile>(),
+                    Administrators = new List<UserProfile>(),
+                    UserPosts = new List<UserPost>()
                 };
+
                 group.UserProfiles.Add(_currentUserProfile);
                 group.Administrators.Add(_currentUserProfile);
+                
                 _db.Groups.Add(
                     group
                 );
@@ -108,7 +112,7 @@ namespace GeniusWebApp.Controllers
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.Message);
+                Console.WriteLine(exception.ToString());
                 return Redirect("Index");
             }
 

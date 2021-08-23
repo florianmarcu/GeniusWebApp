@@ -39,7 +39,7 @@ namespace GeniusWebApp.Controllers
                                 where profile.FirstName.ToLower() == firstName.ToLower() || profile.LastName.ToLower() == lastName.ToLower()
                                 select profile;
 
-            var userId = User.Identity.GetUserId();
+            string userId = User.Identity.GetUserId();
 
             ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
             var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
@@ -47,10 +47,17 @@ namespace GeniusWebApp.Controllers
 
             if (userId != adminId)
             {
-                var profileId = (from profile in _db.UserProfiles
-                                 where profile.User.Id == userId
-                                 select profile).FirstOrDefault().GeniusUserProfileId;
-                ViewBag.validProfile = profileId;
+                try
+                {
+                    var profileId = (from profile in _db.UserProfiles
+                                     where profile.User.Id == userId
+                                     select profile).FirstOrDefault().GeniusUserProfileId;
+                    ViewBag.validProfile = profileId;
+                }
+                catch(Exception e)
+                {
+
+                }
             }
             
             
@@ -93,20 +100,34 @@ namespace GeniusWebApp.Controllers
             }
         }
 
+        public ActionResult AccessDenied()
+        {
+            ViewBag.Model = TempData["model"];
+            return View();
+        }
+
         public ActionResult Show(int id)
         {
             var userprofile = (from profile in _db.UserProfiles
                                where profile.GeniusUserProfileId == id
                                select profile).First();
-            ViewBag.UserProfile = userprofile;
 
             var userId = User.Identity.GetUserId();
-
-            ViewBag.isValidUser = (userprofile.User.Id == userId);
-
             ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
-
             var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+
+            if (userId != userprofile.UserId && userprofile.Visibility == "private" && userId != adminId)
+            {
+                List<string> model = new List<string>();
+                model.Add(userprofile.FirstName);
+                model.Add(userprofile.LastName);
+                TempData["model"] = model;
+
+                return RedirectToAction("AccessDenied");
+            }
+
+            ViewBag.UserProfile = userprofile;
+            ViewBag.isValidUser = (userprofile.User.Id == userId);
             ViewBag.isAdmin = (userId == adminId);
 
             return View();

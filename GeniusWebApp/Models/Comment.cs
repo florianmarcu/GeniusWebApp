@@ -14,7 +14,6 @@ namespace GeniusWebApp.Models
         [Required]
         [MaxLength(1000)]
         public string Text { get; set; }
-        public string Image { get; set; } // same as UserPost
 
         [Required]
         [MaxLength(100)]

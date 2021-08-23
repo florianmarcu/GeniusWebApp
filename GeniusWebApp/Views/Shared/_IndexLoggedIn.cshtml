@@ -15,7 +15,7 @@
 <div style="">
     <div class="" style="float: left">
         <h1> Cereri de prietenie</h1>
-        @if (friendRequests.Count != 0)
+        @if (ViewBag.friendRequests.Count != 0)
         {
             <div class="list-group">
                 @foreach (Tuple<FriendRequest, UserProfile> fr in friendRequestUserProfiles)

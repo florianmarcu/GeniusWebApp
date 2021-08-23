@@ -10,6 +10,7 @@ namespace GeniusWebApp.Models
 {
     public class UserProfile
     {
+
         [Key]
         public int GeniusUserProfileId { get; set; }
 
@@ -27,6 +28,7 @@ namespace GeniusWebApp.Models
         [StringLength(100)]
         public string LastName { get; set; }
 
+        [InverseProperty("UserProfiles")]
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<FriendRequest> FriendRequests { get; set; }
         public virtual ICollection<UserPost> UserPosts { get; set; }

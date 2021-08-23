@@ -1,6 +1,7 @@
 ﻿<link rel="stylesheet" href="~/Content/all.css">
 <link rel="stylesheet" href="~/Content/all.min.css">
 @using GeniusWebApp.Models
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -17,6 +18,17 @@
     {
         single = true;
     }
+    string userId = User.Identity.GetUserId();
+    ApplicationDbContext db = new ApplicationDbContext();
+
+    List<string> administratorsIds = new List<string>();
+
+    foreach(var ad in Model.Administrators)
+    {
+        string id = ad.UserId;
+        administratorsIds.Add(id);
+    }
+
 }
 
 @if (single)
@@ -37,9 +49,12 @@
     <br />
 
     <p>@Model.Description</p>
-    if (this.User.IsInRole("Admin"))
-    {
-        <a style="background-color: red; color: white;">Sterge</a>
+    if (this.User.IsInRole("Admin") || administratorsIds.Contains(userId))
+    { 
+        <form action="/Group/Delete/@Model.GroupId" method="post">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button type="submit">Delete group</button>
+        </form>
     }
     <br />
     <h2>Postări</h2>
@@ -63,6 +78,25 @@
                     <br />
                     <p>@post.Content</p>
                 </div>
+
+                foreach(var comment in post.Comments)
+                {
+                    <p>@comment.FirstName @comment.LastName</p>
+                    <p>@comment.Text</p>
+
+                    if(this.User.IsInRole("Admin") || userId == comment.UserId)
+                    {
+                        <a href="/Comment/Edit/@comment.Id">Edit</a>
+
+                        <form action="/Comment/Delete/@comment.Id" method="post">
+                            @Html.HttpMethodOverride(HttpVerbs.Delete)
+                            <button type="submit">Delete</button>
+                        </form>
+                    }
+                }
+
+
+                <a href="/Comment/New/@post.Id">New comment</a>
             }
         </div>
     }

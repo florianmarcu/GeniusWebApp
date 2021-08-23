@@ -36,9 +36,15 @@ namespace GeniusWebApp.Controllers
                 return View(groups.ToList()); /// Should contain all the groups registered
             }
         }
-        public ActionResult Delete(int id)
+
+        [HttpDelete]
+        public ActionResult Delete(int Id)
         {
-            var group = _db.Groups.Find(id);
+            var group = _db.Groups.Find(Id);
+
+            List<string> userProfileIds = new List<string>(group.UserProfiles.Select(profile => profile.UserId));
+            //_db.UserProfiles.Select(profile => userProfileIds.Contains(profile.UserId))
+
             _db.Groups.Remove(group);
             _db.SaveChanges();
             return RedirectToAction("Index", "Group");

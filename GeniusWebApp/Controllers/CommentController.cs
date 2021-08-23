@@ -46,11 +46,10 @@ namespace GeniusWebApp.Controllers
 
             return View();
         }
-
-        public ActionResult New(string Id)
+        
+        public ActionResult New(int Id)
         {
             ViewBag.postId = Id;
-
             //var UserPost = (from post in _db.UserPosts
             //                where post.Id == Int32.Parse(Id)
             //                select post).First();
@@ -66,9 +65,10 @@ namespace GeniusWebApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult New(string Id, string Text, string Image)
+        public ActionResult New(string _postId, string Text, string Image)
         {
-            int postId = Int32.Parse(Id);
+            System.Diagnostics.Debug.WriteLine(_postId == "");
+            int postId = Int32.Parse(_postId);
 
             var userPost = (from post in _db.UserPosts
                             where post.Id == postId
@@ -76,7 +76,6 @@ namespace GeniusWebApp.Controllers
 
             Comment comment = new Comment();
             comment.Text = Text;
-            comment.Image = Image;
             comment.Post = userPost;
 
             var userId = User.Identity.GetUserId();
@@ -91,24 +90,27 @@ namespace GeniusWebApp.Controllers
             _db.Comments.Add(comment);
             _db.SaveChanges();
 
-            return RedirectToAction("Show", new { Id = Id });
+            return RedirectToAction("Index", "Home");
+            //return RedirectToAction("Show", new { Id = Id });
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int Id)
         {
-            ViewBag.Id = id;
+            ViewBag.Id = Id;
             return View();
         }
 
         [HttpPut]
         public ActionResult Edit(Comment comment)
         {
+            System.Diagnostics.Debug.WriteLine(comment.Id);
+            System.Diagnostics.Debug.WriteLine(comment.Text);
+
             var db_comm = (from comm in _db.Comments
                            where comm.Id == comment.Id
                            select comm).First();
 
             db_comm.Text = comment.Text;
-            db_comm.Image = comment.Image;
             db_comm.UserId = User.Identity.GetUserId();
 
             try
@@ -117,13 +119,7 @@ namespace GeniusWebApp.Controllers
             }
             catch (DbEntityValidationException ex)
             {
-                foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                {
-                    foreach (var validationError in entityValidationErrors.ValidationErrors)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                    }
-                }
+                
             }
 
             return RedirectToAction("Index", "Home");

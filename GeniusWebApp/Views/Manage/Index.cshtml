@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "Manage";
     GeniusWebApp.Models.UserProfile UserProfile = ViewBag.UserProfile;
-    System.Diagnostics.Debug.WriteLine(UserProfile.LastName);
     ViewBag.TextBoxVisible = "hidden";
     TempData.Add("ProfileImage", "");
 }
@@ -130,13 +129,15 @@
     }
     <br />
     <br />
-    @Html.BeginForm("UpdateProfileImage", "UserProfile")
+    @using (Html.BeginForm("UpdateProfileImage", "UserProfile"))
+    {
     @*<div style="visibility:@ViewBag.TextBoxVisible">
 
         </div>*@
     @*<button onclick="@(ViewBag.TextBoxVisible="visible")">Schimba poza de profil</button>*@
     @Html.TextBox("ProfileImage", TempData["ProfileImage"])
     @Html.ActionLink("Introdu", "../UserProfile/UpdateProfileImage", TempData["ProfileImage"].ToString());
+    }
     <h3>
         @UserProfile.FirstName  @UserProfile.LastName
     </h3>
@@ -149,7 +150,6 @@
 {
     <p>@post.Title</p>
     <p>@post.Content</p>
-    <img src="@post.Image" />
     <a href="/Comment/Show/@post.Id">Comments</a>
 
     if (ViewBag.isAdmin || ViewBag.isValidUser)
