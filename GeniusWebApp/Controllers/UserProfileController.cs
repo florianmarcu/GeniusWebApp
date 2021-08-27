@@ -40,6 +40,8 @@ namespace GeniusWebApp.Controllers
                                 select profile;
 
             string userId = User.Identity.GetUserId();
+            ViewBag.firstName = firstName;
+            ViewBag.lastName = lastName;
 
             ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
             var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
@@ -74,7 +76,8 @@ namespace GeniusWebApp.Controllers
         public ActionResult UpdateProfileImage(string ProfileImage)
         {
             //if(ProfileImage )
-           //string ProfileImage = TempData["ProfileImage"].ToString();
+            //string ProfileImage = TempData["ProfileImage"].ToString();
+            System.Diagnostics.Debug.WriteLine(ProfileImage == null);
            if(ProfileImage == "") // if unsuccesful, do nothing
             {
                 return RedirectToAction("Index","Manage");
@@ -94,7 +97,7 @@ namespace GeniusWebApp.Controllers
                     {
                         return RedirectToAction("Index", "Manage");
                     }
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Manage");
                 }
                 return RedirectToAction("Index", "Manage");
             }
@@ -116,7 +119,17 @@ namespace GeniusWebApp.Controllers
             ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
             var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
 
-            if (userId != userprofile.UserId && userprofile.Visibility == "private" && userId != adminId)
+            bool areFriends = false;
+            foreach(var friend in userprofile.Friends)
+            {
+                if(friend.UserId == userId)
+                {
+                    areFriends = true;
+                    break;
+                }
+            }
+
+            if (!areFriends && userId != userprofile.UserId && userprofile.Visibility == "private" && userId != adminId)
             {
                 List<string> model = new List<string>();
                 model.Add(userprofile.FirstName);
@@ -141,7 +154,7 @@ namespace GeniusWebApp.Controllers
             group.UserProfiles.Add(_currentUserProfile);
             _currentUserProfile.Groups.Add(group);
             _db.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Group", new { GroupId = GroupId });
         }
         public ActionResult LeaveGroup(int GroupId)
         {
@@ -152,6 +165,36 @@ namespace GeniusWebApp.Controllers
             _currentUserProfile.Groups.Remove(group);
             _db.SaveChanges();
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Edit(int Id)
+        {
+            ViewBag.Id = Id;
+            return View();
+        }
+
+        [HttpPut]
+        public ActionResult Edit(int Id, string ProfileImage, string FirstName, string LastName, bool Visibility)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine(Id);
+                UserProfile profile = _db.UserProfiles.Find(Id);
+                System.Diagnostics.Debug.WriteLine(profile.FirstName);
+                profile.ProfileImage = ProfileImage;
+                profile.FirstName = FirstName;
+                profile.LastName = LastName;
+                if (Visibility == true)
+                    profile.Visibility = "private";
+                else profile.Visibility = "public";
+                _db.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
+
+            return RedirectToAction("ShowUsers", "Home");
         }
     }
 }

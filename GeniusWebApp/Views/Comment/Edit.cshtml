@@ -1,11 +1,15 @@
-﻿
+﻿@using GeniusWebApp.Models
 @{
     ViewBag.Title = "Edit";
+
+    ApplicationDbContext _db = new ApplicationDbContext();
+    Comment comment = _db.Comments.Find(ViewBag.Id);
+
 }
 
 <form method="post" action="/Comment/Edit/@ViewBag.Id">
     @Html.HttpMethodOverride(HttpVerbs.Put)
     <label>Text:</label>
-    <input name="Text" />
+    <input name="Text" value="@comment.Text" />
     <button type="submit">Submit</button>
 </form>

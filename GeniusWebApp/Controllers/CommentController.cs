@@ -50,16 +50,14 @@ namespace GeniusWebApp.Controllers
         public ActionResult New(int Id)
         {
             ViewBag.postId = Id;
-            //var UserPost = (from post in _db.UserPosts
-            //                where post.Id == Int32.Parse(Id)
-            //                select post).First();
 
-            //var userId = User.Identity.GetUserId();
-            //ViewBag.isValidUser = (userId == UserPost.Profile.User.Id);
+            var groupId = TempData["GroupId"];
+            var userProfileId = TempData["UserProfileId"];
 
-            //ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
-            //var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
-            //ViewBag.isAdmin = (userId == adminId);
+            TempData.Clear();
+
+            TempData["GroupId"] = groupId;
+            TempData["UserProfileId"] = userProfileId;
 
             return View();
         }
@@ -67,7 +65,6 @@ namespace GeniusWebApp.Controllers
         [HttpPost]
         public ActionResult New(string _postId, string Text, string Image)
         {
-            System.Diagnostics.Debug.WriteLine(_postId == "");
             int postId = Int32.Parse(_postId);
 
             var userPost = (from post in _db.UserPosts
@@ -78,24 +75,66 @@ namespace GeniusWebApp.Controllers
             comment.Text = Text;
             comment.Post = userPost;
 
+            ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
             var userId = User.Identity.GetUserId();
-            var userProfile = (from profile in _db.UserProfiles
-                               where profile.User.Id == userId
-                               select profile).First();
 
-            comment.LastName = userProfile.LastName;
-            comment.FirstName = userProfile.FirstName;
+            if (adminId == userId)
+            {
+                comment.LastName = "admin";
+                comment.FirstName = "admin";
+            }
+            else
+            {
+                var userProfile = (from profile in _db.UserProfiles
+                                   where profile.User.Id == userId
+                                   select profile).First();
+
+                comment.LastName = userProfile.LastName;
+                comment.FirstName = userProfile.FirstName;
+            }
             comment.UserId = userId;
 
             _db.Comments.Add(comment);
             _db.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
-            //return RedirectToAction("Show", new { Id = Id });
+            var groupId = TempData["GroupId"];
+
+            if (groupId != null)
+            {
+                return RedirectToAction("Index", "Group", new { GroupId = groupId });
+            }
+
+
+            if (adminId == userId)
+            {
+                var userProfileId = TempData["UserProfileId"];
+                if (userProfileId != null)
+                {
+                    return RedirectToAction("Show", "UserProfile", new { id = userProfileId });
+                }
+                return RedirectToAction("IndexAdmin", "Home");
+            }
+
+            var upI = TempData["UserProfileId"];
+            if(upI != null)
+            {
+                return RedirectToAction("Show", "UserProfile", new { id = upI });
+            }
+
+            return RedirectToAction("Index", "Manage");
         }
 
         public ActionResult Edit(int Id)
         {
+            var groupId = TempData["GroupId"];
+            var userProfileId = TempData["UserProfileId"];
+
+            TempData.Clear();
+
+            TempData["GroupId"] = groupId;
+            TempData["UserProfileId"] = userProfileId;
+
             ViewBag.Id = Id;
             return View();
         }
@@ -103,8 +142,6 @@ namespace GeniusWebApp.Controllers
         [HttpPut]
         public ActionResult Edit(Comment comment)
         {
-            System.Diagnostics.Debug.WriteLine(comment.Id);
-            System.Diagnostics.Debug.WriteLine(comment.Text);
 
             var db_comm = (from comm in _db.Comments
                            where comm.Id == comment.Id
@@ -122,7 +159,35 @@ namespace GeniusWebApp.Controllers
                 
             }
 
-            return RedirectToAction("Index", "Home");
+            var userId = User.Identity.GetUserId();
+
+            ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+
+            var groupId = TempData["GroupId"];
+
+            if (groupId != null)
+            {
+                return RedirectToAction("Index", "Group", new { GroupId = groupId });
+            }
+
+            if (adminId == userId)
+            {
+                var userProfileId = TempData["UserProfileId"];
+                if (userProfileId != null)
+                {
+                    return RedirectToAction("Show", "UserProfile", new { id = userProfileId });
+                }
+                return RedirectToAction("IndexAdmin", "Home");
+            }
+
+            var upI = TempData["UserProfileId"];
+            if (upI != null)
+            {
+                return RedirectToAction("Show", "UserProfile", new { id = upI });
+            }
+
+            return RedirectToAction("Index", "Manage");
         }
 
         [HttpDelete]
@@ -135,7 +200,35 @@ namespace GeniusWebApp.Controllers
             _db.Comments.Remove(comment);
             _db.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            var userId = User.Identity.GetUserId();
+
+            ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+
+            var groupId = TempData["GroupId"];
+
+            if (groupId != null)
+            {
+                return RedirectToAction("Index", "Group", new { GroupId = groupId });
+            }
+
+            if (adminId == userId)
+            {
+                var userProfileId = TempData["UserProfileId"];
+                if (userProfileId != null)
+                {
+                    return RedirectToAction("Show", "UserProfile", new { id = userProfileId });
+                }
+                return RedirectToAction("IndexAdmin", "Home");
+            }
+
+            var upI = TempData["UserProfileId"];
+            if (upI != null)
+            {
+                return RedirectToAction("Show", "UserProfile", new { id = upI });
+            }
+
+            return RedirectToAction("Index", "Manage");
         }
 
     }

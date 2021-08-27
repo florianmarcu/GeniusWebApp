@@ -18,6 +18,9 @@ namespace GeniusWebApp.Models
         [MaxLength(1000)]
         public string Content { get; set; }
 
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
         public int? UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; } // the user that makes the post
         public virtual ICollection<Comment> Comments { get; set; } // the comments that appear in the post

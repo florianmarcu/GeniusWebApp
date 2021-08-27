@@ -1,14 +1,17 @@
-﻿
+﻿@using GeniusWebApp.Models;
 @{
     ViewBag.Title = "New";
+    string userId = (string)TempData["userId"];
+    TempData.Clear();
+    TempData["userId"] = userId;
 }
 
 <h2>New</h2>
 
-<form method="post" action="New">
+<form method="post" action="/UserPost/New/">
     <label>Title:</label>
-    <input name="Title"/>
+    <input name="Title" />
     <label>Content:</label>
-    <input name="Content"/>
+    <input name="Content" />
     <button type="submit">Submit</button>
 </form>

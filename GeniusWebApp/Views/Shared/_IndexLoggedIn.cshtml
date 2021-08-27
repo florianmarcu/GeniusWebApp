@@ -96,9 +96,9 @@
                 <div class="list-group-item btn" style="padding-left: 0px ; border-width: 2px">
                     @Html.ActionLink(
                        linkText: friend.FirstName+" "+friend.LastName,
-                       actionName: "Index",
+                       actionName: "Show",
                        controllerName: "UserProfile",
-                       routeValues: new { UserProfileId = friend.GeniusUserProfileId },
+                       routeValues: new { id = friend.GeniusUserProfileId },
                        htmlAttributes: new {@class = "btn"}
                        )
                     @*<text class="" style="font-size:15px;">@friend.FirstName @friend.LastName</text>*@

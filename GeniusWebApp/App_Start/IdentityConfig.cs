@@ -102,7 +102,8 @@ namespace GeniusWebApp
             RoleStore<IdentityRole>(context.Get<ApplicationDbContext>());
             return new ApplicationRoleManager(roleStore);
         }
-    }
+    }
+
 
     // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>

@@ -1,14 +1,24 @@
-﻿
+﻿@using GeniusWebApp.Models
 @{
     ViewBag.Title = "Edit";
+    ApplicationDbContext _db = new ApplicationDbContext();
+    UserPost post = _db.UserPosts.Find(ViewBag.Id);
+
+    var userProfileId = TempData["UserProfileId"];
+    var groupId = TempData["GroupId"];
+
+    TempData.Clear();
+
+    TempData["UserProfileId"] = userProfileId;
+    TempData["GroupId"] = groupId;
 }
 
 <form method="post" action="/UserPost/Edit/@ViewBag.Id">
     @Html.HttpMethodOverride(HttpVerbs.Put)
     <label>Title:</label>
-    <input name="Title" />
+    <input name="Title" value="@post.Title" />
     <label>Content:</label>
-    <input name="Content" />
+    <input name="Content" value="@post.Content" />
     <button type="submit">Submit</button>
 </form>
 

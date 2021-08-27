@@ -3,18 +3,30 @@
     ViewBag.Title = "Home Page";
 }
 
+@if (this.User.IsInRole("Admin") || this.User.IsInRole("LoggedUser"))
+{
 <div class="panel-title" style="padding: 10px">
     Hello, @System.Web.HttpContext.Current.User.Identity.Name
 </div>
+}
 
 <div class="" style="margin-left:35vw;">
     <h1 style="margin-left:5vw;">Cauta o persoana:</h1>
     @Html.Partial("SearchBar")
 </div>
-<div class="">
-    <br />
-    <br />
-</div>
+
+@if (ViewBag.adminMessages != null)
+{
+    foreach (var adminMessage in ViewBag.adminMessages)
+    {
+    <p>@adminMessage.message</p>
+    <form method="post" action="/AdminMessages/Delete/@adminMessage.AdminMessageId">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button type="submit">Delete</button>
+    </form>
+        
+    }
+}
 
 
 @if (User.Identity.IsAuthenticated)

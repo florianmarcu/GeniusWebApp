@@ -1,12 +1,16 @@
-﻿
+﻿@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Show";
     GeniusWebApp.Models.UserProfile UserProfile = ViewBag.UserProfile;
+    TempData.Clear();
+    TempData["userId"] = UserProfile.UserId;
+    ViewBag.currentUserId = User.Identity.GetUserId();
+    TempData["UserProfileId"] = UserProfile.GeniusUserProfileId;
 }
 
 <div class="container" style="padding-left: 20px">
     <h3>Poză de profil</h3>
-    @if (UserProfile.ProfileImage == "")
+    @if (UserProfile.ProfileImage != "" && UserProfile.ProfileImage != null)
     {
         <img src="@UserProfile.ProfileImage" class="img-circle" width="200" />
 
@@ -30,23 +34,49 @@
 {
     if (post.IsGroupPost == false)
     {
-    <p>@post.Title</p>
-    <p>@post.Content</p>
-    <a href="/Comment/Show/@post.Id">Comments</a>
+        <p>@post.FirstName  @post.LastName</p>
+
+        <p>@post.Title</p>
+        <p>@post.Content</p>
 
         if (ViewBag.isAdmin || ViewBag.isValidUser)
         {
-        <a href="/UserPost/Edit/@post.Id">Edit</a>
+            <a href="/UserPost/Edit/@post.Id">Edit</a>
 
-        <form method="post" action="/UserPost/Delete/@post.Id">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button type="submit">Delete</button>
-        </form>
+            <form method="post" action="/UserPost/Delete/@post.Id">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button type="submit">Delete</button>
+            </form>
+        }
+
+        <p>Comments:</p>
+
+        foreach (var comment in post.Comments)
+        {
+            <p>@comment.LastName</p>
+            <p>@comment.FirstName</p>
+            <p>@comment.Text</p>
+
+            if (ViewBag.currentUserId == comment.UserId || ViewBag.isAdmin)
+            {
+                <a href="/Comment/Edit/@comment.Id">Edit</a>
+
+                <form method="post" action="/Comment/Delete/@comment.Id">
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    <button type="submit">Delete</button>
+                </form>
+            }
+
+        }
+
+        if (this.User.IsInRole("Admin") || this.User.IsInRole("LoggedUser"))
+        {
+        <a href="/Comment/New/@post.Id">New comment</a>
         }
     }
 }
 
-@if (ViewBag.isValidUser)
+@if (ViewBag.isValidUser || ViewBag.isAdmin)
 {
     <a href="/UserPost/New" class="btn btn-primary">New Post</a>
 }

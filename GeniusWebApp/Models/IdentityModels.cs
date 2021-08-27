@@ -32,6 +32,7 @@ namespace GeniusWebApp.Models
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserPost> UserPosts { get; set; }
         public DbSet<FriendRequest> FriendRequests { get; set; }
+        public DbSet<AdminMessage> AdminMessages { get; set; }
 
         public static ApplicationDbContext Create()
         {

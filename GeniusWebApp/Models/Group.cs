@@ -16,10 +16,10 @@ namespace GeniusWebApp.Models
 
         public string Name { get; set; }
         public string Description { get; set; }
+        public string AdministratorId { get; set; }
 
         [InverseProperty("Groups")]
         public virtual ICollection<UserProfile> UserProfiles { get; set; }
-        public virtual ICollection<UserProfile> Administrators { get; set; }
         public virtual ICollection<UserPost> UserPosts { get; set; }
     }
 }

@@ -70,7 +70,7 @@ namespace GeniusWebApp.Controllers
             _db.SaveChanges();
 
 
-            return RedirectToAction("Index", "Home", null);
+            return RedirectToAction("Index", "Manage", null);
         }
 
 

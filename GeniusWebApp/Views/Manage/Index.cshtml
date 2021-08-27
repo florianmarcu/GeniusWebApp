@@ -1,9 +1,14 @@
 ﻿@model GeniusWebApp.Models.IndexViewModel
+@using Microsoft.AspNet.Identity.Owin;
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Manage";
     GeniusWebApp.Models.UserProfile UserProfile = ViewBag.UserProfile;
     ViewBag.TextBoxVisible = "hidden";
+    TempData.Clear();
     TempData.Add("ProfileImage", "");
+
+    ViewBag.currentUserId = User.Identity.GetUserId();
 }
 
 <script src="~/Scripts/CheckBoxes.js" , type="text/javascript"></script>
@@ -118,8 +123,9 @@
 </h2>
 <div class="container" style="padding-left: 20px">
     <h3>Poză de profil</h3>
-    @if (UserProfile.ProfileImage == "")
+    @if (UserProfile.ProfileImage != "" && UserProfile.ProfileImage != null)
     {
+
         <img src="@UserProfile.ProfileImage" class="img-circle" width="200" />
 
     }
@@ -131,12 +137,14 @@
     <br />
     @using (Html.BeginForm("UpdateProfileImage", "UserProfile"))
     {
-    @*<div style="visibility:@ViewBag.TextBoxVisible">
+        @*<div style="visibility:@ViewBag.TextBoxVisible">
 
-        </div>*@
-    @*<button onclick="@(ViewBag.TextBoxVisible="visible")">Schimba poza de profil</button>*@
-    @Html.TextBox("ProfileImage", TempData["ProfileImage"])
-    @Html.ActionLink("Introdu", "../UserProfile/UpdateProfileImage", TempData["ProfileImage"].ToString());
+            </div>*@
+        @*<button onclick="@(ViewBag.TextBoxVisible="visible")">Schimba poza de profil</button>*@
+        @Html.TextBox("ProfileImage", TempData["ProfileImage"])
+        <form method="post" action="/UserPost/UpdateProfileImage/@TempData["ProfileImage"]">
+            <button>Update</button>
+        </form>
     }
     <h3>
         @UserProfile.FirstName  @UserProfile.LastName
@@ -146,24 +154,54 @@
 
 </div>
 
+
+    <div class="panel-heading"></div>
+    <div class="panel-body"></div>
+    <div class="panel-footer"></div>
 @foreach (var post in ViewBag.userPosts)
 {
-    <p>@post.Title</p>
-    <p>@post.Content</p>
-    <a href="/Comment/Show/@post.Id">Comments</a>
+    <div class="panel panel-default">
+        <p>@post.FirstName</p>
+        <p>@post.LastName</p>
 
-    if (ViewBag.isAdmin || ViewBag.isValidUser)
-    {
-        <a href="/UserPost/Edit/@post.Id">Edit</a>
+        <p>@post.Title</p>
+        <p>@post.Content</p>
 
-        <form method="post" action="/UserPost/Delete/@post.Id">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button type="submit">Delete</button>
-        </form>
-    }
+        @if (ViewBag.isAdmin || ViewBag.isValidUser)
+        {
+            <a href="/UserPost/Edit/@post.Id">Edit</a>
+
+            <form method="post" action="/UserPost/Delete/@post.Id">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button type="submit">Delete</button>
+            </form>
+        }
+
+        <p>Comments:</p>
+
+        @foreach (var comment in post.Comments)
+        {
+            <p>@comment.LastName</p>
+            <p>@comment.FirstName</p>
+            <p>@comment.Text</p>
+
+            if (ViewBag.currentUserId == comment.UserId || ViewBag.isAdmin)
+            {
+                <a href="/Comment/Edit/@comment.Id">Edit</a>
+
+                <form method="post" action="/Comment/Delete/@comment.Id">
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    <button type="submit">Delete</button>
+                </form>
+            }
+
+        }
+
+        <a href="/Comment/New/@post.Id">New comment</a>
+    </div>
 }
 
-@if (ViewBag.isValidUser)
+@if (ViewBag.isValidUser || ViewBag.isAdmin)
 {
     <a href="/UserPost/New" class="btn btn-primary">New Post</a>
 }

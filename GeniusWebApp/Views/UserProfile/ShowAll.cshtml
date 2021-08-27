@@ -29,8 +29,22 @@
         <br />
     }*@
 @model List<GeniusWebApp.Models.UserProfile>
+@using Microsoft.AspNet.Identity;
+@using GeniusWebApp.Models
+@using Microsoft.AspNet.Identity.Owin;
+@using Microsoft.Owin.Security;
+@using System.Web.Security;
+@using System.Web;
 @{
     ViewBag.Title = "Show";
+    ApplicationUserManager UserManager = HttpContext.Current.GetOwinContext().Get<ApplicationUserManager>();
+    ApplicationDbContext _db = new ApplicationDbContext();
+    var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+
+    string currentUserId = User.Identity.GetUserId();
+
+    UserProfile userProfile = _db.UserProfiles.Where(p => p.UserId == currentUserId).FirstOrDefault();
+
 }
 <head>
     <link href="~/Content/all.css" rel="stylesheet"> <!--load all styles -->
@@ -48,25 +62,60 @@ else
         <div class="list-group">
             @foreach (var profile in Model)
             {
-            <a href="Show/@profile.GeniusUserProfileId">
-                <div class="list-group-item" style="margin-left: 10vw; font-size:20px; width: 70vw">
-                    @profile.LastName @profile.FirstName
-                    @*<i class="fas fa-person-booth">
-                            @Html.ActionLink( linkText: "Adaugă", actionName: "Create",controllerName: "FriendRequest",profile.UserId)
+                if (profile.UserId != currentUserId)
+                {
+                <a href="Show/@profile.GeniusUserProfileId">
+                    <div class="list-group-item" style="margin-left: 10vw; font-size:20px; width: 70vw">
+                        @profile.LastName @profile.FirstName
+                        @*<i class="fas fa-person-booth">
+                        @Html.ActionLink( linkText: "Adaugă", actionName: "Create",controllerName: "FriendRequest",profile.UserId)
 
-                        </i>*@
+                    </i>*@
 
+                    </div>
+                </a>
+                    if (currentUserId == adminId)
+                    {
+                        TempData["firstName"] = ViewBag.firstName;
+                        TempData["lastName"] = ViewBag.lastName;
+                <form method="post" action="/AdminMessages/New">
+                    <input type="text" name="message"/>
+                    <input hidden value="@profile.UserId" name="userId"/>
+                    <button type="submit">Send</button>
+                </form>
+                    }
+                    else
+                    {
+                        if (this.User.IsInRole("Admin") || this.User.IsInRole("LoggedUser"))
+                        {
+
+                            bool areFriends = false;
+                            foreach (var friend in userProfile.Friends)
+                            {
+                                if (friend.UserId == profile.UserId)
+                                {
+                                    areFriends = true;
+                                    break;
+                                }
+                            }
+
+                            if (areFriends)
+                            {
+                        <p>Already friends</p>
+                            }
+                            else
+                            {
                     <a href="../FriendRequest/Create?userProfileId=@profile.GeniusUserProfileId">
-                        <i class="fas fa-person-booth"></i>
+                        <i class="fas fa-person-booth">Send friend request</i>
                     </a>
-
-                </div>
-
-            </a>
+                            }
+                        }
+                    }
                 <br />
                 <br />
                 <br />
 
+                }
             }
         </div>
     </div>
