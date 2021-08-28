@@ -22,3 +22,39 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.buttons * {
+    display: inline-block;
+}
+
+a.noStyling {
+    color: black;
+}
+
+.dl-horizontal dt, .dl-horizontal dd {
+    padding-top: 8px;
+}
+
+.dl-horizontal {
+    border: 2px solid red;
+    background-color: #FB9A4B;
+}
+
+body {
+    background-color: #F9E3DC;
+}
+
+.panel-default {
+    background-color: #FFF199;
+    border-color: red;
+    border-width: 2px;
+    border-radius: 5px;
+}
+
+.panel-default > .panel-heading {
+    background-color: #FFE11F;
+}
+
+.panel-default > .panel-footer {
+    background-color: #FFEC70;
+}

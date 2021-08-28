@@ -28,92 +28,124 @@
 {
     <div style="display: inline">
 
-        <h1>Grupul @Model.Name</h1>
-        @Html.ActionLink(
-        linkText: "Ieși din grup",
-        actionName: "LeaveGroup",
-        controllerName: "UserProfile",
-        routeValues: new { GroupId = Model.GroupId },
-        htmlAttributes: new { @style = " color: red" }
-        )
+        <h1>@Model.Name Group</h1>
+        <div class="buttons">
+            @Html.ActionLink(
+            linkText: "Leave group",
+            actionName: "LeaveGroup",
+            controllerName: "UserProfile",
+            routeValues: new { GroupId = Model.GroupId },
+            htmlAttributes: new { @class = "btn btn-danger" }
+            )
 
+            @if (this.User.IsInRole("Admin") || Model.AdministratorId == userId)
+            {
+            <div class="buttons">
+                <form action="/Group/Delete/@Model.GroupId" method="post">
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    <button class="btn btn-warning" type="submit">Delete group</button>
+                </form>
+                <a class="btn btn-success" href="/Group/Edit/@Model.GroupId">Edit group</a>
+            </div>
+        
+            }
+        </div>
     </div>
-    <h2>Descriere:</h2>
+    <h2>Description:</h2>
     <br />
 
     <p>@Model.Description</p>
-    if (this.User.IsInRole("Admin") || Model.AdministratorId == userId)
-    { 
-        <form action="/Group/Delete/@Model.GroupId" method="post">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button type="submit">Delete group</button>
-        </form>
-        <a href="/Group/Edit/@Model.GroupId">Edit group</a>
-    }
+    
     <br />
-    <h2>Postări</h2>
+    <h2>Posts</h2>
     <br />
 
     @Html.ActionLink(
-            linkText: "Creează o postare",
+            linkText: "Create post",
             actionName: "CreateGroupPost",
             controllerName: "UserPost",
             routeValues: new { GroupId = Model.GroupId },
-            htmlAttributes: new { @style = "background-color: red; color: white" }
+            htmlAttributes: new { @class = "btn btn-success" }
             )
     if (Model.UserPosts.Count != 0)
     {
-    <div class="list-group">
-        @foreach (UserPost post in Model.UserPosts)
+        foreach (UserPost post in Model.UserPosts)
         {
-        <div class="list-group-item" style="width: 50vw">
-            <p style="padding: 10px">@post.FirstName @post.LastName</p>
-            <p>@post.Title</p>
-            <br />
-            <p>@post.Content</p>
-        </div>
+            <div class="panel panel-default">
 
-            foreach (var comment in post.Comments)
-            {
-                <p>@comment.FirstName @comment.LastName</p>
-                <p>@comment.Text</p>
+                <div class="panel-heading">
+                    <div class="buttons">
+                        <h3>@post.Title</h3>
+                        @{
+                            UserProfile profile = _db.UserProfiles.Find(post.UserProfileId);
+                        }
 
-                if (this.User.IsInRole("Admin") || userId == comment.UserId)
-                {
-                    <a href="/Comment/Edit/@comment.Id">Edit</a>
+                        @if (profile == null || this.User.IsInRole("Admin"))
+                        {
+                            if (this.User.IsInRole("Admin"))
+                            {
+                                <div class="buttons" style="float:right">
+                                    <form action="/UserPost/Delete/@post.Id" method="post">
+                                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                    </form>
+                                    <a class="btn btn-primary" href="/UserPost/Edit/@post.Id">Edit</a>
+                                </div>
 
-                    <form action="/Comment/Delete/@comment.Id" method="post">
-                        @Html.HttpMethodOverride(HttpVerbs.Delete)
-                        <button type="submit">Delete</button>
-                    </form>
-                }
-            }
+                            }
+                        }
+                        else if (profile.UserId == userId)
+                        {
+                            <div class="buttons" style="float:right">
+                                <form action="/UserPost/Delete/@post.Id" method="post">
+                                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                    <button class="btn btn-danger" type="submit">Delete</button>
+                                </form>
+                                <a class="btn btn-primary" href="/UserPost/Edit/@post.Id">Edit</a>
+                            </div>
+                        }
+                    </div>
+                    <p>@post.FirstName @post.LastName</p>
+                </div>
 
-            UserProfile profile = _db.UserProfiles.Find(post.UserProfileId);
+                <div class="panel-body">
+                    <p>@post.Content</p>
+                </div>
 
-            if (profile == null || this.User.IsInRole("Admin"))
-            {
-                if (this.User.IsInRole("Admin"))
-                {
-                    <form action="/UserPost/Delete/@post.Id" method="post">
-                        @Html.HttpMethodOverride(HttpVerbs.Delete)
-                        <button type="submit">Delete</button>
-                    </form>
-                    <a href="/UserPost/Edit/@post.Id">Edit</a>
+                <div class="panel-footer">
+                    @foreach (var comment in post.Comments)
+                    {
+                        <div class="panel panel-default">
 
-                }
-            }
-            else if (profile.UserId == userId)
-            {
-                <form action="/UserPost/Delete/@post.Id" method="post">
-                    @Html.HttpMethodOverride(HttpVerbs.Delete)
-                    <button type="submit">Delete</button>
-                </form>
-                <a href="/UserPost/Edit/@post.Id">Edit</a>
-            }
-            <a href="/Comment/New/@post.Id">New comment</a>
+                            <div class="panel-heading buttons">
+                                <h4>@comment.FirstName @comment.LastName</h4>
+                                @if (this.User.IsInRole("Admin") || userId == comment.UserId)
+                                {
+                                    <div style="float:right">
+                                        <a class="glyphicon glyphicon-edit" href="/Comment/Edit/@comment.Id"></a>
+
+                                        <form action="/Comment/Delete/@comment.Id" method="post">
+                                            @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                            <button class="glyphicon glyphicon-trash" type="submit"></button>
+                                        </form>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="panel-body">
+
+                                <p>@comment.Text</p>
+
+                                
+                            </div>
+                        </div>
+                    }
+
+                    <a class="btn btn-primary" style="background-color:aqua; color:purple" href="/Comment/New/@post.Id">New comment</a>
+                </div>
+                
+            </div>
         }
-    </div>
     }
     else
     {

@@ -4,9 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Adauga un grup nou: </h2>
+<h2> Add a new group </h2>
 
-@Html.ActionLink(linkText: "Înscrie-te într-un grup", actionName: "ShowAll", controllerName: "Group")
-<br />
-<br />
-@Html.ActionLink(linkText: "Creează un grup nou", actionName: "New", controllerName: "Group")
+<div class="buttons">
+    <a class="btn btn-primary" style="background-color:yellow; color: purple" href="/Group/ShowAll"> Join a group</a>
+    <a class="btn btn-primary" style="background-color:orange; color: purple" href="/Group/New">Create a group</a>
+</div>
