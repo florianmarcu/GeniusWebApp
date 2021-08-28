@@ -58,3 +58,65 @@ body {
 .panel-default > .panel-footer {
     background-color: #FFEC70;
 }
+
+.mainPageContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mainPageContainer > div {
+    width: 40%;
+}
+
+.groupContainer {
+}
+
+.friendContainer {
+}
+
+.groups {
+    width: 100%;
+    text-align: center;
+}
+
+.group {
+    background-color: greenyellow;
+    border: 2px solid red;
+    margin-bottom: 15px;
+}
+
+.group a {
+    color: black;
+}
+
+.friends {
+    width: 100%;
+}
+
+.friend {
+    background-color: greenyellow;
+    border: 2px solid red;
+    margin-bottom: 15px;
+    padding-left: 15px;
+}
+.friend a {
+    color: black;
+    
+}
+
+.friend h3 {
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    height: 100%;
+    line-height: 55px;
+    padding-left: 30px;
+}
+
+.btn-special {
+    display: block;
+    margin: 5px;
+}
+
+a.btn-special {
+    color: white;
+}

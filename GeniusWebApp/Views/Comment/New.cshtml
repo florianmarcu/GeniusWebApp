@@ -1,11 +1,18 @@
-﻿
+﻿@using GeniusWebApp.Models
+@model Comment
 @{
     ViewBag.Title = "New";
 }
 
+<br />
 <form method="post" action="/Comment/New">
-    <input type="hidden" name="_postId" value="@ViewBag.postId"/>
-    <label>Content:</label>
-    <input name="Text"/>
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    <input type="hidden" name="_postId" value="@ViewBag.postId" />
+    @*<label>Content:</label>
+        <input name="Text" />*@
+
+    @Html.Label("Text", "Content")
+    @Html.EditorFor(m => m.Text)
+    @Html.ValidationMessageFor(m => m.Text, "", new { @class = "text-danger" })
     <button type="Submit">Submit</button>
 </form>

@@ -10,9 +10,11 @@
     
 @if (ViewBag.adminMessages != null)
 {
-    <h3>Admin messages</h3>
-    foreach (var adminMessage in ViewBag.adminMessages)
+    if (ViewBag.adminMessages.Count != 0)
     {
+    <h3>Admin messages</h3>
+        foreach (var adminMessage in ViewBag.adminMessages)
+        {
     <div class="buttons">
         <div class="panel panel-default" style="width:10%; margin-bottom:5px">
             <p style="padding-left: 10px">@adminMessage.message</p>
@@ -23,6 +25,7 @@
             <button class="glyphicon glyphicon-trash btn btn-danger" style="margin-top:5px" type="submit"></button>
         </form>
     </div>
+        }
     }
 }
 

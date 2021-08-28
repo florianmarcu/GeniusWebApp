@@ -95,8 +95,11 @@ namespace GeniusWebApp.Controllers
             }
             comment.UserId = userId;
 
-            _db.Comments.Add(comment);
-            _db.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                _db.Comments.Add(comment);
+                _db.SaveChanges();
+            }
 
             var groupId = TempData["GroupId"];
 

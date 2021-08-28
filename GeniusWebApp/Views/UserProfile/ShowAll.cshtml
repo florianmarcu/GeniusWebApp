@@ -31,49 +31,51 @@ else
     <div class="panel panel-default">
         @foreach (var profile in Model)
         {
-            <div class="panel-heading buttons" style="border-bottom: 3px solid red">
-            @if (profile.UserId != currentUserId)
+            
+            if (profile.UserId != currentUserId)
             {
-                <a href="Show/@profile.GeniusUserProfileId"><h3>@profile.LastName @profile.FirstName</h3></a>
-                <div style="float:right">
-                    @if (currentUserId == adminId)
-                    {
-                        TempData["firstName"] = ViewBag.firstName;
-                        TempData["lastName"] = ViewBag.lastName;
-                        <form method="post" action="/AdminMessages/New">
-                            <input type="text" name="message"/>
-                            <input type="hidden" value="@profile.UserId" name="userId"/>
-                            <button class="btn btn-success" type="submit">Send</button>
-                        </form>
-                    }
-                    else
-                    {
-                        if (this.User.IsInRole("Admin") || this.User.IsInRole("LoggedUser"))
+                <div class="panel-heading buttons" style="border-bottom: 3px solid red">
+                    <a href="Show/@profile.GeniusUserProfileId"><h3>@profile.LastName @profile.FirstName</h3></a>
+                    <div style="float:right">
+                        @if (currentUserId == adminId)
                         {
-
-                            bool areFriends = false;
-                            foreach (var friend in userProfile.Friends)
+                            TempData["firstName"] = ViewBag.firstName;
+                            TempData["lastName"] = ViewBag.lastName;
+                            <form method="post" action="/AdminMessages/New">
+                                <input type="text" name="message" />
+                                <input type="hidden" value="@profile.UserId" name="userId" />
+                                <button class="btn btn-success" type="submit">Send</button>
+                            </form>
+                        }
+                        else
+                        {
+                            if (this.User.IsInRole("Admin") || this.User.IsInRole("LoggedUser"))
                             {
-                                if (friend.UserId == profile.UserId)
+
+                                bool areFriends = false;
+                                foreach (var friend in userProfile.Friends)
                                 {
-                                    areFriends = true;
-                                    break;
+                                    if (friend.UserId == profile.UserId)
+                                    {
+                                        areFriends = true;
+                                        break;
+                                    }
+                                }
+
+                                if (areFriends)
+                                {
+                                    <p>Already friends</p>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-success" href="../FriendRequest/Create?userProfileId=@profile.GeniusUserProfileId">Send friend request</a>
                                 }
                             }
-
-                            if (areFriends)
-                            {
-                                <p>Already friends</p>
-                            }
-                            else
-                            {
-                                <a class="btn btn-success"href="../FriendRequest/Create?userProfileId=@profile.GeniusUserProfileId">Send friend request</a>
-                            }
                         }
-                    }
+                    </div>
                 </div>
             }
-            </div>
+            
             
         }
     </div>
