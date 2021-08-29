@@ -6,13 +6,13 @@
 
 <br />
 <form method="post" action="/Comment/New">
-    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-    <input type="hidden" name="_postId" value="@ViewBag.postId" />
-    @*<label>Content:</label>
-        <input name="Text" />*@
+    @{
+        TempData["postId"] = ViewBag.postId.ToString();
+    }
+    <label>Content:</label>
+    <input name="Text" />
 
-    @Html.Label("Text", "Content")
-    @Html.EditorFor(m => m.Text)
     @Html.ValidationMessageFor(m => m.Text, "", new { @class = "text-danger" })
+    <br />
     <button type="Submit">Submit</button>
 </form>

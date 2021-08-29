@@ -1,4 +1,5 @@
 ﻿@using GeniusWebApp.Models;
+@model UserPost
 @{
     ViewBag.Title = "New";
     string userId = (string)TempData["userId"];
@@ -6,12 +7,16 @@
     TempData["userId"] = userId;
 }
 
-<h2>New</h2>
+<h2>Create post</h2>
 
 <form method="post" action="/UserPost/New/">
     <label>Title:</label>
     <input name="Title" />
+    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+    <br />
     <label>Content:</label>
     <input name="Content" />
+    @Html.ValidationMessageFor(m => m.Content, "", new { @class = "text-danger" })
+    <br />
     <button type="submit">Submit</button>
 </form>

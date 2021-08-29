@@ -97,7 +97,7 @@ namespace GeniusWebApp.Controllers
             return View(group);
         }
         [HttpPost]
-        public ActionResult NewGroup(string name, string description)
+        public ActionResult NewGroup(Group group)
         {
             ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
             var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
@@ -106,17 +106,19 @@ namespace GeniusWebApp.Controllers
 
             if(_currentUserId == adminId)
             {
-                Group group = new Group
+                if (ModelState.IsValid)
                 {
-                    Name = name,
-                    Description = description,
-                    UserProfiles = new List<UserProfile>(),
-                    UserPosts = new List<UserPost>()
-                };
+                    group.UserProfiles = new List<UserProfile>();
+                    group.UserPosts = new List<UserPost>();
 
-                group.AdministratorId = adminId;
-                _db.Groups.Add(group);
-                _db.SaveChanges();
+                    group.AdministratorId = adminId;
+                    _db.Groups.Add(group);
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    return View("~/Views/Group/New.cshtml");
+                }
 
                 return RedirectToAction("ShowGroups", "Home");
             }
@@ -125,21 +127,23 @@ namespace GeniusWebApp.Controllers
             
             try
             {
-                Group group = new Group
+                if (ModelState.IsValid)
                 {
-                    Name = name,
-                    Description = description,
-                    UserProfiles = new List<UserProfile>(),
-                    UserPosts = new List<UserPost>()
-                };
+                    group.UserProfiles = new List<UserProfile>();
+                    group.UserPosts = new List<UserPost>();
 
-                group.UserProfiles.Add(_currentUserProfile);
-                group.AdministratorId = _currentUserProfile.UserId;
-                
-                _db.Groups.Add(
-                    group
-                );
-                _db.SaveChanges();
+                    group.UserProfiles.Add(_currentUserProfile);
+                    group.AdministratorId = _currentUserProfile.UserId;
+
+                    _db.Groups.Add(
+                        group
+                    );
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    return View("~/Views/Group/New.cshtml");
+                }
 
                 int id = _db.Groups.OrderByDescending(g => g.GroupId).First().GroupId;
 

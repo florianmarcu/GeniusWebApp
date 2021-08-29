@@ -174,20 +174,25 @@ namespace GeniusWebApp.Controllers
         }
 
         [HttpPut]
-        public ActionResult Edit(int Id, string ProfileImage, string FirstName, string LastName, bool Visibility)
+        public ActionResult Edit(UserProfile profile)
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine(Id);
-                UserProfile profile = _db.UserProfiles.Find(Id);
-                System.Diagnostics.Debug.WriteLine(profile.FirstName);
-                profile.ProfileImage = ProfileImage;
-                profile.FirstName = FirstName;
-                profile.LastName = LastName;
-                if (Visibility == true)
-                    profile.Visibility = "private";
-                else profile.Visibility = "public";
-                _db.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    UserProfile p = _db.UserProfiles.Find(profile.GeniusUserProfileId);
+                    p.ProfileImage = profile.ProfileImage;
+                    p.FirstName = profile.FirstName;
+                    p.LastName = profile.LastName;
+                    p.Visibility = profile.Visibility;
+
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    ViewBag.Id = profile.GeniusUserProfileId;
+                    return View("Edit");
+                }
             }
             catch(Exception e)
             {

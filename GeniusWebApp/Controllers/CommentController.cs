@@ -63,18 +63,17 @@ namespace GeniusWebApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult New(string _postId, string Text, string Image)
+        public ActionResult New(Comment comment)
         {
             try
             {
+                string _postId = TempData["postId"].ToString();
                 int postId = Int32.Parse(_postId);
 
                 var userPost = (from post in _db.UserPosts
                                 where post.Id == postId
                                 select post).First();
 
-                Comment comment = new Comment();
-                comment.Text = Text;
                 comment.Post = userPost;
 
                 ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
@@ -97,14 +96,16 @@ namespace GeniusWebApp.Controllers
                 }
                 comment.UserId = userId;
 
-                if (TryUpdateModel(comment))
+                if (ModelState.IsValid)
                 {
                     _db.Comments.Add(comment);
                     _db.SaveChanges();
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("Im here!!!!");
+                    System.Diagnostics.Debug.WriteLine("Im here");
+                    ViewBag.postId = postId;
+                    return View("New");
                 }
 
 
@@ -164,10 +165,17 @@ namespace GeniusWebApp.Controllers
 
             db_comm.Text = comment.Text;
             db_comm.UserId = User.Identity.GetUserId();
-
+            ViewBag.Id = comment.Id;
             try
             {
-                _db.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    return View("Edit");
+                }
             }
             catch (DbEntityValidationException ex)
             {

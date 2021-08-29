@@ -14,7 +14,9 @@ namespace GeniusWebApp.Models
         [Key]
         public int GroupId { get; set; }
 
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
         public string AdministratorId { get; set; }
 

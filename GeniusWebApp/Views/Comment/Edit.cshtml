@@ -10,10 +10,8 @@
 <br />
 <form method="post" action="/Comment/Edit/@ViewBag.Id">
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <label>Text:</label>
     <input name="Text" value="@comment.Text" />
-    <br />
     @Html.ValidationMessageFor(m => m.Text, "", new { @class = "text-danger" })
     <br />
     <button type="submit">Submit</button>

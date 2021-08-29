@@ -29,67 +29,69 @@
 
 @foreach (var post in UserProfile.UserPosts)
 {
-    <div class="panel panel-default">
 
-    @if (post.IsGroupPost == false)
+
+    if (post.IsGroupPost == false)
     {
-        <div class="panel-heading">
-            <div class="buttons">
-                <h3>@post.Title</h3>
-                @if (ViewBag.isAdmin || ViewBag.isValidUser)
-                {
-                    <div style="float:right">
-                        <a class="btn btn-primary" href="/UserPost/Edit/@post.Id">Edit</a>
-
-                        <form method="post" action="/UserPost/Delete/@post.Id">
-                            @Html.HttpMethodOverride(HttpVerbs.Delete)
-                            <button class="btn btn-danger" type="submit">Delete</button>
-                        </form>
-                    </div>
-                }
-            </div>
-            <p>@post.FirstName  @post.LastName</p>
-
-        </div>
-
-        <div class="panel-body">
-            <p>@post.Content</p>
-        </div>
-
-
-        <div class="panel-footer">
-            <p>Comments:</p>
-
-            @foreach (var comment in post.Comments)
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="buttons">
+            <h3>@post.Title</h3>
+            @if (ViewBag.isAdmin || ViewBag.isValidUser)
             {
-                <div class="panel panel-default">
-                    <div class="panel-heading buttons">
-                        <p>@comment.LastName @comment.FirstName</p>
-                        @if (ViewBag.currentUserId == comment.UserId || ViewBag.isAdmin)
-                        {
-                            <div style="float:right">
-                                <a class="glyphicon glyphicon-edit" href="/Comment/Edit/@comment.Id"></a>
+                <div style="float:right">
+                    <a class="btn btn-primary" href="/UserPost/Edit/@post.Id">Edit</a>
 
-                                <form method="post" action="/Comment/Delete/@comment.Id">
-                                    @Html.HttpMethodOverride(HttpVerbs.Delete)
-                                    <button class="glyphicon glyphicon-trash" type="submit"></button>
-                                </form>
-                            </div>
-                        }
-                    </div>
-
-                    <div class="panel-body">
-                        <p>@comment.Text</p>
-                    </div>
+                    <form method="post" action="/UserPost/Delete/@post.Id">
+                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
                 </div>
             }
-            @if (this.User.IsInRole("Admin") || this.User.IsInRole("LoggedUser"))
-            {
-                <a class="btn btn-primary" style="background-color:aqua; color:purple" href="/Comment/New/@post.Id">New comment</a>
-            }
         </div>
+        <p>@post.FirstName  @post.LastName</p>
+
+    </div>
+
+    <div class="panel-body">
+        <p>@post.Content</p>
+    </div>
+
+
+    <div class="panel-footer">
+        <p>Comments:</p>
+
+        @foreach (var comment in post.Comments)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading buttons">
+                    <p>@comment.LastName @comment.FirstName</p>
+                    @if (ViewBag.currentUserId == comment.UserId || ViewBag.isAdmin)
+                    {
+                        <div style="float:right">
+                            <a class="glyphicon glyphicon-edit" href="/Comment/Edit/@comment.Id"></a>
+
+                            <form method="post" action="/Comment/Delete/@comment.Id">
+                                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                <button class="glyphicon glyphicon-trash" type="submit"></button>
+                            </form>
+                        </div>
+                    }
+                </div>
+
+                <div class="panel-body">
+                    <p>@comment.Text</p>
+                </div>
+            </div>
+        }
+        @if (this.User.IsInRole("Admin") || this.User.IsInRole("LoggedUser"))
+        {
+            <a class="btn btn-primary" style="background-color:aqua; color:purple" href="/Comment/New/@post.Id">New comment</a>
+        }
+    </div>
+</div>
     }
-     </div>
+     
 }
 
 @if (ViewBag.isValidUser || ViewBag.isAdmin)

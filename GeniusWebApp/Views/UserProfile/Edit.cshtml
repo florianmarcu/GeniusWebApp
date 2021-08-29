@@ -1,4 +1,5 @@
 ﻿@using GeniusWebApp.Models
+@model UserProfile
 @{
     ViewBag.Title = "Edit";
     ApplicationDbContext _db = new ApplicationDbContext();
@@ -9,31 +10,36 @@
 
 <h2>Edit</h2>
 
-<form method="post" action="/UserProfile/Edit/@ViewBag.Id">
+<form method="post" action="/UserProfile/Edit/">
     @Html.HttpMethodOverride(HttpVerbs.Put)
+    <input type="hidden" value="@ViewBag.Id" name="GeniusUserProfileId" />
     <label>Profile Image: </label>
     <input type="text" name="ProfileImage" value="@profile.ProfileImage" />
+    @Html.ValidationMessageFor(m => m.ProfileImage, "", new { @class = "text-danger" })
     <br />
     <label>First name: </label>
     <input type="text" name="FirstName" value="@profile.FirstName" />
+    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
     <br />
     <label>Last name: </label>
     <input type="text" name="LastName" value="@profile.LastName" />
+    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
     <br />
     <label>Visibility: </label>
     @if (profile.Visibility == "private")
     {
-        <input type="checkbox" name="Visibility" checked value="true" />
+        <input type="checkbox" name="Visibility" checked value="private" />
         <label>Private</label>
-        <input type="checkbox" name="Visibility" value="false" />
+        <input type="checkbox" name="Visibility" value="public" />
         <label>Public</label>
     }
     else
     {
-        <input type="checkbox" name="Visibility" value="true" />
+        <input type="checkbox" name="Visibility" value="private" />
         <label>Private</label>
-        <input type="checkbox" name="Visibility" checked value="false" />
+        <input type="checkbox" name="Visibility" checked value="public" />
         <label>Public</label>
     }
+    <br />
     <button type="submit">Edit</button>
 </form>

@@ -15,17 +15,13 @@ namespace GeniusWebApp.Models
         [MaxLength(1000)]
         public string Text { get; set; }
 
-        [Required]
-        [MaxLength(100)]
+
         public string LastName { get; set; }    // the name of the person that posted the comment
-        [Required]
-        [MaxLength(100)]
+
         public string FirstName { get; set; }
 
-        [Required]
         public string UserId { get; set; } // the id of the person that posted the comment
 
-        [Required]
         public virtual UserPost Post { get; set; } // the post it appears in
     }
 }

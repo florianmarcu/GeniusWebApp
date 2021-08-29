@@ -1,4 +1,5 @@
 ﻿@using GeniusWebApp.Models
+@model Group
 @{
     ViewBag.Title = "Edit";
 
@@ -9,9 +10,16 @@
 
 <h2>Edit</h2>
 
-<form action="/Group/Edit/@ViewBag.groupId" method="post">
-    @Html.HttpMethodOverride(HttpVerbs.Put);
-    <input type="text" name="name" value="@group.Name"/>
-    <input type="text" name="description" value="@group.Description"/>
+<form action="/Group/Edit" method="post">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <input type="hidden" value="@ViewBag.groupId" name="GroupId"/>
+    <label>Name:</label>
+    <input type="text" name="name" value="@group.Name" />
+    @Html.ValidationMessageFor(g => g.Name, "", new { @class = "text-danger" })
+    <br />
+    <label>Description:</label>
+    <input type="text" name="description" value="@group.Description" />
+    @Html.ValidationMessageFor(g => g.Description, "", new { @class = "text-danger" })
+    <br />
     <button type="submit">Edit</button>
 </form>

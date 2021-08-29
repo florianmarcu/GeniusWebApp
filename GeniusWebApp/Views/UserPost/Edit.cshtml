@@ -1,4 +1,5 @@
 ﻿@using GeniusWebApp.Models
+@model UserPost
 @{
     ViewBag.Title = "Edit";
     ApplicationDbContext _db = new ApplicationDbContext();
@@ -13,12 +14,19 @@
     TempData["GroupId"] = groupId;
 }
 
-<form method="post" action="/UserPost/Edit/@ViewBag.Id">
+<form style="padding-top: 10px" method="post" action="/UserPost/Edit/@ViewBag.Id">
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    <label>Title:</label>
-    <input name="Title" value="@post.Title" />
-    <label>Content:</label>
-    <input name="Content" value="@post.Content" />
+    <div class="form-group">
+        <label>Title:</label>
+        <input name="Title" value="@post.Title" />
+        @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+        <br />
+    </div>
+    <div class="form-group">
+        <label>Content:</label>
+        <input name="Content" value="@post.Content" />
+        @Html.ValidationMessageFor(m => m.Content, "", new { @class = "text-danger" })
+        <br />
+    </div>
     <button type="submit">Submit</button>
 </form>
-

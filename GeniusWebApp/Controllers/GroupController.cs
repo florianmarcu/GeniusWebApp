@@ -70,7 +70,7 @@ namespace GeniusWebApp.Controllers
             return View(group);
         }
         [HttpPost]
-        public ActionResult New(string name, string description)
+        public ActionResult New(Group group)
         {
             ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
             var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
@@ -80,30 +80,37 @@ namespace GeniusWebApp.Controllers
             //{
             //    Group group
             //}
+            System.Diagnostics.Debug.WriteLine("Im here10!!!!");
 
-            UserProfile _currentUserProfile = _db.UserProfiles.Where(profile => profile.UserId == _currentUserId).First();
             try
             {
-                Group group = new Group
+                if (ModelState.IsValid)
                 {
-                    Name = name,
-                    Description = description
-                };
-                group.UserProfiles.Add(_currentUserProfile);
-                group.AdministratorId = _currentUserProfile.UserId;
-                _db.Groups.Add(
-                    group
-                );
-                _currentUserProfile.Groups.Add(group);
-                _db.SaveChanges();
-
+                    UserProfile _currentUserProfile = _db.UserProfiles.Where(profile => profile.UserId == _currentUserId).First();
+                    group.UserProfiles.Add(_currentUserProfile);
+                    group.AdministratorId = _currentUserProfile.UserId;
+                    _db.Groups.Add(
+                        group
+                    );
+                    _currentUserProfile.Groups.Add(group);
+                    _db.SaveChanges();
+                    System.Diagnostics.Debug.WriteLine("Im here3!!!!");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Im here4!!!!");
+                    return View("New");
+                }
+                System.Diagnostics.Debug.WriteLine("Im here!!!!");
                 int id = _db.Groups.OrderByDescending(g => g.GroupId).First().GroupId;
                 //return Redirect("Group/Index/"+group.GroupId);
                 return RedirectToAction("Index", "Group", new { GroupId = id });
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.Message);
+
+                System.Diagnostics.Debug.WriteLine("Im here2!!!!");
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return Redirect("Index");
             }
 
@@ -116,16 +123,21 @@ namespace GeniusWebApp.Controllers
         }
 
         [HttpPut]
-        public ActionResult Edit(int id, string name, string description)
+        public ActionResult Edit(Group g)
         {
-            Group group = _db.Groups.Find(id);
-            if (TryUpdateModel(group))
+            if (ModelState.IsValid)
             {
-                group.Name = name;
-                group.Description = description;
+                Group group = _db.Groups.Find(g.GroupId);
+                group.Name = g.Name;
+                group.Description = g.Description;
                 _db.SaveChanges();
             }
-            return RedirectToAction("Show", "Group", new { id = id });
+            else
+            {
+                ViewBag.groupId = g.GroupId;
+                return View("Edit");
+            }
+            return RedirectToAction("Show", "Group", new { id = g.GroupId });
         }
     }
 }

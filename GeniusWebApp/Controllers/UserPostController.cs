@@ -60,10 +60,16 @@ namespace GeniusWebApp.Controllers
                 post.FirstName = userProfile.FirstName;
                 post.LastName = userProfile.LastName;
             }
-            
 
-            _db.UserPosts.Add(post);
-            _db.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                _db.UserPosts.Add(post);
+                _db.SaveChanges();
+            }
+            else
+            {
+                return View("New");
+            }
 
             userId = User.Identity.GetUserId();
 
@@ -88,6 +94,7 @@ namespace GeniusWebApp.Controllers
                             where post.Id == id
                             select post).First();
 
+            userpost.Comments.Clear();
             _db.UserPosts.Remove(userpost);
 
             _db.SaveChanges();
@@ -125,7 +132,15 @@ namespace GeniusWebApp.Controllers
             userpost.Title = post.Title;
             userpost.Content = post.Content;
 
-            _db.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                _db.SaveChanges();
+            }
+            else
+            {
+                ViewBag.Id = post.Id;
+                return View("Edit");
+            }
 
             var userId = User.Identity.GetUserId();
 
@@ -169,15 +184,20 @@ namespace GeniusWebApp.Controllers
         {
             ViewBag.GroupId = GroupId;
             GroupPost groupPost = new GroupPost();
+            var groupId = TempData["GroupId"];
+            TempData["GroupId"] = groupId;
             return View(groupPost);
         }
         [HttpPost]
-        public ActionResult CreateGroupPost(string Title, string Content)
+        public ActionResult CreateGroupPost(UserPost userPost)
         {
             ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
             var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
 
             string _currentUserId = User.Identity.GetUserId();
+
+            var groupId = TempData["GroupId"];
+            TempData["GroupId"] = groupId;
 
 
             if (adminId == _currentUserId)
@@ -185,16 +205,21 @@ namespace GeniusWebApp.Controllers
                 try
                 {
                     Group group = _db.Groups.Find((int)TempData["GroupId"]);
-                    UserPost newPost = new UserPost
+
+                    userPost.FirstName = "admin";
+                    userPost.LastName = "admin";
+                    userPost.IsGroupPost = true;
+
+                    if (ModelState.IsValid)
                     {
-                        Title = Title,
-                        Content = Content,
-                        FirstName = "admin",
-                        LastName = "admin",
-                        IsGroupPost = true
-                    };
-                    group.UserPosts.Add(newPost);
-                    _db.SaveChanges();
+                        group.UserPosts.Add(userPost);
+                        _db.SaveChanges();
+                    }
+                    else
+                    {
+                        ViewBag.GroupId = (int)TempData["GroupId"];
+                        return View("CreateGroupPost");
+                    }
                     return RedirectToAction(
                         actionName: "Index",
                         controllerName: "Group",
@@ -213,22 +238,27 @@ namespace GeniusWebApp.Controllers
                 try
                 {
                     Group group = _db.Groups.Find((int)TempData["GroupId"]);
-                    UserPost newPost = new UserPost
+
+                    userPost.UserProfileId = _currentUserProfile.GeniusUserProfileId;
+                    userPost.UserProfile = _currentUserProfile;
+                    userPost.FirstName = _currentUserProfile.FirstName;
+                    userPost.LastName = _currentUserProfile.LastName;
+                    userPost.IsGroupPost = true;
+
+                    if (ModelState.IsValid)
                     {
-                        Title = Title,
-                        Content = Content,
-                        UserProfileId = _currentUserProfile.GeniusUserProfileId,
-                        UserProfile = _currentUserProfile,
-                        FirstName = _currentUserProfile.FirstName,
-                        LastName = _currentUserProfile.LastName,
-                        IsGroupPost = true
-                    };
-                    group.UserPosts.Add(newPost);
-                    _db.SaveChanges();
+                        group.UserPosts.Add(userPost);
+                        _db.SaveChanges();
+                    }
+                    else
+                    {
+                        ViewBag.GroupId = (int)TempData["GroupId"];
+                        return View("CreateGroupPost");
+                    }
                     return RedirectToAction(
-                        actionName: "Index",
-                        controllerName: "Group",
-                        routeValues: new { GroupId = (int)TempData["GroupId"] }
+                    actionName: "Index",
+                    controllerName: "Group",
+                    routeValues: new { GroupId = (int)TempData["GroupId"] }
                     );
                 }
                 catch (Exception exc)

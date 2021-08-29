@@ -4,29 +4,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Creează un grup</h2>
+<h2>Create a group</h2>
 
-@using (Html.BeginForm("NewGroup", "Home"))
+@using (Html.BeginForm("NewGroup", "Home", FormMethod.Post))
 {
     <div class="form-group">
         @Html.LabelFor(group => group.Name)
         @Html.TextBoxFor(group => group.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(group => group.Name, "", new { @class = "text-danger" })
+        <br />
     </div>
     <div class="form-group">
         @Html.LabelFor(group => group.Description)
         @Html.TextBoxFor(group => group.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(group => group.Description, "", new { @class = "text-danger" })
     </div>
-    <button type="submit" class="btn btn-primary">GATA</button>
-    @*<form method="post" action="/Home/NewGroup">
-            <label>Nume</label>
-            <br />
-            <input type="text" name="Name" />
-            <br /><br />
-            <label>Descriere</label>
-            <br />
-            <input type="text" name="Description" />
-            <br /><br />
-            <button type="submit">Adauga grup</button>
-        </form>*@
+    <br />
+    <button type="submit" class="btn btn-primary">Create</button>
 }
 
