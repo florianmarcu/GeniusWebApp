@@ -1,0 +1,17 @@
+﻿@using GeniusWebApp.Models
+@{
+    ViewBag.Title = "Edit";
+
+    ApplicationDbContext _db = new ApplicationDbContext();
+    int groupId = ViewBag.groupId;
+    Group group = _db.Groups.Where(grp => grp.GroupId == groupId).First();
+}
+
+<h2>Edit</h2>
+
+<form action="/Group/Edit/@ViewBag.groupId" method="post">
+    @Html.HttpMethodOverride(HttpVerbs.Put);
+    <input type="text" name="name" value="@group.Name"/>
+    <input type="text" name="description" value="@group.Description"/>
+    <button type="submit">Edit</button>
+</form>

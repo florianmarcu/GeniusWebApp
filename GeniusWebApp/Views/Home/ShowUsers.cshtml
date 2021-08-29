@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "ShowUsers";
+    
+}
+
+<h2>Existing users</h2>
+
+@foreach(var profile in ViewBag.profiles)
+{
+<div class="panel panel-default buttons">
+    <a style="padding-left: 10px" href="/UserProfile/Show/@profile.GeniusUserProfileId"><h3>@profile.FirstName @profile.LastName</h3></a>
+
+    <div style="float:right">
+        <a class="btn btn-primary" href="/UserProfile/Edit/@profile.GeniusUserProfileId">Edit</a>
+        <form action="/Home/DeleteUser/@profile.UserId" method="post">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button class="btn btn-danger" type="submit">Delete</button>
+        </form>
+    </div>
+</div>
+}
+
+<a class="btn btn-success" href="/Home/NewUser">New user</a>

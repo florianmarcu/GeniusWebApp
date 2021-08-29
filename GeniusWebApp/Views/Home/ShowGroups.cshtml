@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "ShowGroups";
+}
+
+<h1 style="text-align:center">Groups</h1>
+
+@*@foreach(var group in ViewBag.groups)
+{
+    <a href="/Group/Index/@group.GroupId">@group.Name</a>
+    <p>@group.Description</p>
+
+    <a href="/Group/Edit/@group.GroupId">Edit</a>
+    <form action="/Group/Delete/@group.GroupId">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button type="submit">Delete</button>
+    </form>
+}*@
+
+<div class="groups">
+    @foreach (var group in ViewBag.groups)
+    {
+        <div class="group">
+            <a href="/Group/Show/@group.GroupId">
+                <div>
+                    <h2>@group.Name</h2>
+                    <p>@group.Description</p>
+
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+<div style="text-align:center">
+    <a class="btn btn-primary" href="/Group/New/">New group</a>
+</div>

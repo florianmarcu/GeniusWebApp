@@ -1,0 +1,39 @@
+﻿@using GeniusWebApp.Models
+@{
+    ViewBag.Title = "Edit";
+    ApplicationDbContext _db = new ApplicationDbContext();
+    UserProfile profile = _db.UserProfiles.Find(ViewBag.Id);
+}
+
+<script src="~/Scripts/CheckBoxes.js" , type="text/javascript"></script>
+
+<h2>Edit</h2>
+
+<form method="post" action="/UserProfile/Edit/@ViewBag.Id">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <label>Profile Image: </label>
+    <input type="text" name="ProfileImage" value="@profile.ProfileImage" />
+    <br />
+    <label>First name: </label>
+    <input type="text" name="FirstName" value="@profile.FirstName" />
+    <br />
+    <label>Last name: </label>
+    <input type="text" name="LastName" value="@profile.LastName" />
+    <br />
+    <label>Visibility: </label>
+    @if (profile.Visibility == "private")
+    {
+        <input type="checkbox" name="Visibility" checked value="true" />
+        <label>Private</label>
+        <input type="checkbox" name="Visibility" value="false" />
+        <label>Public</label>
+    }
+    else
+    {
+        <input type="checkbox" name="Visibility" value="true" />
+        <label>Private</label>
+        <input type="checkbox" name="Visibility" checked value="false" />
+        <label>Public</label>
+    }
+    <button type="submit">Edit</button>
+</form>
