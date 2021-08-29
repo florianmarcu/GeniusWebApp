@@ -65,67 +65,79 @@ namespace GeniusWebApp.Controllers
         [HttpPost]
         public ActionResult New(string _postId, string Text, string Image)
         {
-            int postId = Int32.Parse(_postId);
-
-            var userPost = (from post in _db.UserPosts
-                            where post.Id == postId
-                            select post).First();
-
-            Comment comment = new Comment();
-            comment.Text = Text;
-            comment.Post = userPost;
-
-            ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
-            var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
-            var userId = User.Identity.GetUserId();
-
-            if (adminId == userId)
+            try
             {
-                comment.LastName = "admin";
-                comment.FirstName = "admin";
-            }
-            else
-            {
-                var userProfile = (from profile in _db.UserProfiles
-                                   where profile.User.Id == userId
-                                   select profile).First();
+                int postId = Int32.Parse(_postId);
 
-                comment.LastName = userProfile.LastName;
-                comment.FirstName = userProfile.FirstName;
-            }
-            comment.UserId = userId;
+                var userPost = (from post in _db.UserPosts
+                                where post.Id == postId
+                                select post).First();
 
-            if (ModelState.IsValid)
-            {
-                _db.Comments.Add(comment);
-                _db.SaveChanges();
-            }
+                Comment comment = new Comment();
+                comment.Text = Text;
+                comment.Post = userPost;
 
-            var groupId = TempData["GroupId"];
+                ApplicationUserManager UserManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+                var adminId = UserManager.FindByEmail("admin@gmail.com").Id;
+                var userId = User.Identity.GetUserId();
 
-            if (groupId != null)
-            {
-                return RedirectToAction("Index", "Group", new { GroupId = groupId });
-            }
-
-
-            if (adminId == userId)
-            {
-                var userProfileId = TempData["UserProfileId"];
-                if (userProfileId != null)
+                if (adminId == userId)
                 {
-                    return RedirectToAction("Show", "UserProfile", new { id = userProfileId });
+                    comment.LastName = "admin";
+                    comment.FirstName = "admin";
                 }
-                return RedirectToAction("IndexAdmin", "Home");
-            }
+                else
+                {
+                    var userProfile = (from profile in _db.UserProfiles
+                                       where profile.User.Id == userId
+                                       select profile).First();
 
-            var upI = TempData["UserProfileId"];
-            if(upI != null)
+                    comment.LastName = userProfile.LastName;
+                    comment.FirstName = userProfile.FirstName;
+                }
+                comment.UserId = userId;
+
+                if (TryUpdateModel(comment))
+                {
+                    _db.Comments.Add(comment);
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Im here!!!!");
+                }
+
+
+                var groupId = TempData["GroupId"];
+
+                if (groupId != null)
+                {
+                    return RedirectToAction("Index", "Group", new { GroupId = groupId });
+                }
+
+
+                if (adminId == userId)
+                {
+                    var userProfileId = TempData["UserProfileId"];
+                    if (userProfileId != null)
+                    {
+                        return RedirectToAction("Show", "UserProfile", new { id = userProfileId });
+                    }
+                    return RedirectToAction("IndexAdmin", "Home");
+                }
+
+                var upI = TempData["UserProfileId"];
+                if (upI != null)
+                {
+                    return RedirectToAction("Show", "UserProfile", new { id = upI });
+                }
+
+                return RedirectToAction("Index", "Manage");
+            }catch(Exception e)
             {
-                return RedirectToAction("Show", "UserProfile", new { id = upI });
+                System.Diagnostics.Debug.WriteLine(e.StackTrace);
+                return RedirectToAction("Index", "Home");
             }
-
-            return RedirectToAction("Index", "Manage");
         }
 
         public ActionResult Edit(int Id)
