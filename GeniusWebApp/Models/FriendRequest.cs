@@ -20,7 +20,6 @@ namespace GeniusWebApp.Models
 
         [Required]
         public int SenderUserProfileId { get; set; } // the user to whom the FR belongs to
-        [ForeignKey("UserProfile")]
         public int UserProfileId { get; set; }
         public virtual UserProfile UserProfile { get; set; } // The User Profile to whom the Friend Request was sent to
 

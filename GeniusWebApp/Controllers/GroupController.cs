@@ -47,9 +47,11 @@ namespace GeniusWebApp.Controllers
             List<UserPost> posts = new List<UserPost>(_db.UserPosts.Where(post => userPostIds.Contains(post.Id)));
             foreach(var post in posts)
             {
+                post.Comments.Clear();
                 _db.UserPosts.Remove(post);
             }
-
+            group.UserPosts.Clear();
+            group.UserProfiles.Clear();
             _db.Groups.Remove(group);
             _db.SaveChanges();
             return RedirectToAction("Index", "Home");

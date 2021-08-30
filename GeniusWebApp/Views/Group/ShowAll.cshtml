@@ -15,7 +15,7 @@
                 {
                     <p>@group.Item1.Name</p>
                     @Html.ActionLink(
-                        linkText: "Alătură-te",
+                        linkText: "Join",
                         actionName: "JoinGroup",
                         controllerName: "UserProfile",
                         routeValues: new {groupId = group.Item1.GroupId},
@@ -25,7 +25,7 @@
                 else
                 {
                     <p class="disabled">@group.Item1.Name </p>
-                    <p>Faci deja parte din acest grup</p>
+                    <p>You are already part of this group</p>
                 }
                 <br />
             </div>

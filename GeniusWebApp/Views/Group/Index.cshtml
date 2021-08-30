@@ -30,14 +30,16 @@
 
         <h1>@Model.Name Group</h1>
         <div class="buttons">
+            @if (!this.User.IsInRole("Admin"))
+            {
             @Html.ActionLink(
-            linkText: "Leave group",
-            actionName: "LeaveGroup",
-            controllerName: "UserProfile",
-            routeValues: new { GroupId = Model.GroupId },
-            htmlAttributes: new { @class = "btn btn-danger" }
-            )
-
+                     linkText: "Leave group",
+                     actionName: "LeaveGroup",
+                     controllerName: "UserProfile",
+                     routeValues: new { GroupId = Model.GroupId },
+                     htmlAttributes: new { @class = "btn btn-danger" }
+                     )
+            }
             @if (this.User.IsInRole("Admin") || Model.AdministratorId == userId)
             {
             <div class="buttons">

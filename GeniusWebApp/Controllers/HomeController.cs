@@ -263,13 +263,18 @@ namespace GeniusWebApp.Controllers
         public async Task<ActionResult> DeleteUser(string Id)
         {
             var profile = _db.UserProfiles.Where(prof => prof.UserId == Id).First();
-            
-            foreach(var friend in profile.Friends)
-            {
-                friend.Friends.Remove(profile);
-            }
+
+            profile.Friends.Clear();
+            //foreach(var friend in profile.Friends)
+            //{
+            //    friend.Friends.Remove(profile);
+            //}
             profile.Friends.Clear();
             profile.Groups.Clear();
+            foreach(var post in profile.UserPosts)
+            {
+                post.Comments.Clear();
+            }
             profile.UserPosts.Clear();
             profile.FriendRequests.Clear();
             _db.SaveChanges();
